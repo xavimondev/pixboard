@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { Room } from '@/components/room'
+import { Layout } from '@/components/layout'
 
 export default function Home() {
   return (
@@ -33,10 +33,9 @@ export default function Home() {
           content='A realtime collaboration tool for editing images'
         />
       </Head>
-      <main>
-        <h1 className='text-3xl font-bold underline text-blue-400'>Hello world!</h1>
-        <Room />
-      </main>
+      <Layout>
+        <h1>Pixboard.io</h1>
+      </Layout>
     </>
   )
 }
