@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { Room } from '@/components/Room'
+import { Room } from '@/components/room'
 
 export default function Home() {
   return (
