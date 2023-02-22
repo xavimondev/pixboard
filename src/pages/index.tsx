@@ -1,7 +1,6 @@
 import Head from 'next/head'
 import { Layout } from '@/components/layout'
-import { ListUsers } from '@/components/list-users'
-// import { Room } from '@/components/room'
+import { HeaderToolbar } from '@/components/header-toolbar'
 
 export default function Home() {
   return (
@@ -37,12 +36,7 @@ export default function Home() {
       </Head>
       <Layout>
         {/* <Room /> */}
-        <header className='flex flex-row justify-between items-center'>
-          <div className='bg-white p-2.5 px-7 rounded-full flex'>
-            <span className='font-semibold text-lg'>Pixboard.io</span>
-          </div>
-          <ListUsers />
-        </header>
+        <HeaderToolbar />
       </Layout>
     </>
   )
