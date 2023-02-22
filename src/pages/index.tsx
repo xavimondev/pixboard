@@ -1,9 +1,20 @@
+import { GetServerSideProps } from 'next'
 import Head from 'next/head'
+import { getServerSession } from 'next-auth'
+import { User } from '@/types/user'
+import { authOptions } from './api/auth/[...nextauth]'
 import { Layout } from '@/components/layout'
 import { HeaderToolbar } from '@/components/header-toolbar'
-import { LoginBar } from '@/components/login-bar'
+import { AuthBar } from '@/components/auth-bar'
 
-export default function Home() {
+type BoardProps = {
+  userInfo: {
+    user: User
+    status: number
+  }
+}
+
+export default function Home({ userInfo }: BoardProps) {
   return (
     <>
       <Head>
@@ -35,11 +46,39 @@ export default function Home() {
           content='A realtime collaboration tool for editing images'
         />
       </Head>
-      <Layout>
+      <Layout user={userInfo.user}>
         {/* <Room /> */}
         <HeaderToolbar />
-        <LoginBar />
+        <AuthBar user={userInfo.user} />
       </Layout>
     </>
   )
+}
+interface ServerSideProps {
+  userInfo:
+    | User
+    | {
+        status: number
+      }
+}
+
+export const getServerSideProps: GetServerSideProps<ServerSideProps> = async ({ req, res }) => {
+  const session = await getServerSession(req, res, authOptions)
+  const user = session?.user.info
+  let userInfo = null
+  if (user) {
+    userInfo = {
+      user,
+      status: 1
+    }
+  } else {
+    userInfo = {
+      status: 0
+    }
+  }
+  return {
+    props: {
+      userInfo
+    }
+  }
 }
