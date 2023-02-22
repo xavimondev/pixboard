@@ -1,6 +1,6 @@
 import { Fragment, useState } from 'react'
 import Image from 'next/image'
-import { signIn } from 'next-auth/react'
+import { signIn, signOut } from 'next-auth/react'
 import { Listbox, Transition } from '@headlessui/react'
 import { ChevronUpDownIc, LogoutIc } from './icons'
 import { User } from '@/types/user'
@@ -84,7 +84,7 @@ function SignOut({ user }: SignOutProps) {
         </div>
         <span className='text-base font-semibold text-white'>{name}</span>
       </div>
-      <button className='hover:bg-neutral-600 rounded-full p-0.5'>
+      <button className='hover:bg-neutral-600 rounded-full p-0.5' onClick={() => signOut()}>
         <LogoutIc className='w-7 h-7 text-white' />
       </button>
     </div>
