@@ -38,7 +38,9 @@ export default function Home() {
       <Layout>
         {/* <Room /> */}
         <header className='flex flex-row justify-between items-center'>
-          <span>Pixboard.io</span>
+          <div className='bg-white p-2.5 px-7 rounded-full flex'>
+            <span className='font-semibold text-lg'>Pixboard.io</span>
+          </div>
           <ListUsers />
         </header>
       </Layout>
