@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import { Layout } from '@/components/layout'
 import { HeaderToolbar } from '@/components/header-toolbar'
+import { LoginBar } from '@/components/login-bar'
 
 export default function Home() {
   return (
@@ -37,6 +38,7 @@ export default function Home() {
       <Layout>
         {/* <Room /> */}
         <HeaderToolbar />
+        <LoginBar />
       </Layout>
     </>
   )
