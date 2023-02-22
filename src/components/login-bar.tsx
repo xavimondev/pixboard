@@ -8,7 +8,7 @@ export function LoginBar() {
   return (
     <div className='fixed flex items-center left-0 right-0 bottom-9 rounded-3xl bg-neutral-800 z-20 w-4/5 m-auto sm:w-80 px-7 py-2.5'>
       <Listbox value={selected} onChange={setSelected}>
-        <Listbox.Label className='font-semibold text-white w-64 text-base'>
+        <Listbox.Label className='font-semibold text-white w-64 text-base sm:text-sm'>
           Login using:
         </Listbox.Label>
         <div className='relative w-80'>
