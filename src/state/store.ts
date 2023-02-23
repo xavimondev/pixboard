@@ -3,8 +3,11 @@ import { createClient } from '@liveblocks/client'
 import { liveblocks } from '@liveblocks/zustand'
 import type { WithLiveblocks } from '@liveblocks/zustand'
 
+type Cursor = { x: number; y: number }
+
 type State = {
-  roomName: string
+  cursor: Cursor
+  setCursor: (cursor: Cursor) => void
 }
 
 const client = createClient({
@@ -38,9 +41,15 @@ const client = createClient({
 const useStore = create<WithLiveblocks<State>>()(
   liveblocks(
     (set) => ({
-      roomName: 'welcome-board'
+      cursor: { x: 0, y: 0 },
+      setCursor: (cursor) => set({ cursor })
     }),
-    { client }
+    {
+      client,
+      presenceMapping: {
+        cursor: true
+      }
+    }
   )
 )
 
