@@ -8,13 +8,37 @@ type State = {
 }
 
 const client = createClient({
-  publicApiKey: 'pk_dev_oO0br1uBR2i18cfNh1l-D6GHvWGORfr7pe2m8cRt7jnNCCi7go5U4tRHJjMtPEmd'
+  authEndpoint: async (room: string) => {
+    const payload = {
+      room
+    }
+
+    // Call auth API route to get Liveblocks access token
+    const response = await fetch('/api/liveblocks/auth', {
+      method: 'POST',
+      headers: {
+        Authentication: 'token',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    })
+    const result = await response.json()
+
+    // If auth not successful, add stringified error object to current URL params
+    if (!response.ok) {
+      console.log(result.error)
+      return
+    }
+
+    // Return token
+    return result
+  }
 })
 
 const useStore = create<WithLiveblocks<State>>()(
   liveblocks(
     (set) => ({
-      roomName: 'welcome'
+      roomName: 'welcome-board'
     }),
     { client }
   )
