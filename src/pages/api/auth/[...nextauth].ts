@@ -1,29 +1,26 @@
-import NextAuth from 'next-auth'
+import NextAuth, { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import { User } from '@/types/user'
+import GithubProvider from 'next-auth/providers/github'
 
 export const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET
 
-export const authOptions = {
+export const authOptions: NextAuthOptions = {
   secret: NEXTAUTH_SECRET,
-  callbacks: {
-    session({ session }: { session: any }) {
-      // https://github.com/subhamg/unique-username-generator
-      const userInfo: User = {
-        id: 'random.user@example.com',
-        name: 'Random User 🌍',
-        avatar: 'https://unavatar.io/d3vcloud',
-        color: '#0bf'
-      }
-
-      session.user.info = userInfo
-      return session
-    }
-  },
   pages: {
     signIn: '/'
   },
   providers: [
+    GithubProvider({
+      clientId: process.env.GITHUB_CLIENT_ID || '',
+      clientSecret: process.env.GITHUB_CLIENT_SECRET || '',
+      profile(profile) {
+        return {
+          id: String(profile.id),
+          name: profile.name,
+          image: profile.avatar_url
+        }
+      }
+    }),
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
@@ -36,25 +33,32 @@ export const authOptions = {
         if (!credentials) {
           return null
         }
-
         return {
-          id: 'random.user@example.com',
-          name: 'Random User 🌍',
-          avatar: 'https://unavatar.io/d3vcloud',
-          color: '#0bf'
+          id: 'random-id',
+          name: 'Random User 🌍'
         }
       }
     })
-
-    /*
-    // Use GitHub authentication
-    // import GithubProvider from "next-auth/providers/github";
-    GithubProvider({
-      clientId: process.env.GITHUB_CLIENT_ID as string,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
-    }),
-    */
-  ]
+  ],
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id
+      }
+      return token
+    },
+    async session({ session, token }) {
+      const { name, image: avatar } = session.user!
+      return {
+        ...session,
+        user: {
+          id: token.id,
+          name,
+          avatar
+        }
+      }
+    }
+  }
 }
 
 export default NextAuth(authOptions)

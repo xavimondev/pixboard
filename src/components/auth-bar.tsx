@@ -25,6 +25,7 @@ function SignIn() {
       onChange={(value) => {
         setSelected(value)
         if (value === 'Random User') signIn('credentials', { email: 'random.user@example.com' })
+        else if (value === 'Github') signIn('github')
       }}
     >
       <Listbox.Label className='font-semibold text-white w-64 text-base sm:text-sm'>

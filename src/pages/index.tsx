@@ -64,11 +64,14 @@ interface ServerSideProps {
 
 export const getServerSideProps: GetServerSideProps<ServerSideProps> = async ({ req, res }) => {
   const session = await getServerSession(req, res, authOptions)
-  const user = session?.user.info
+  const user = session?.user
   let userInfo = null
   if (user) {
     userInfo = {
-      user,
+      user: {
+        ...user,
+        avatar: user.image ?? 'https://unavatar.io/d3vcloud'
+      },
       status: 1
     }
   } else {
