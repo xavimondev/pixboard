@@ -2,8 +2,9 @@ import { Fragment, useState } from 'react'
 import Image from 'next/image'
 import { signIn, signOut } from 'next-auth/react'
 import { Listbox, Transition } from '@headlessui/react'
-import { ChevronUpDownIc, LogoutIc } from './icons'
+import { getBoardId } from '@/utils/getRandomData'
 import { User } from '@/types/user'
+import { ChevronUpDownIc, LogoutIc } from './icons'
 
 type AuthBarProps = {
   user: User
@@ -16,7 +17,7 @@ export function AuthBar({ user }: AuthBarProps) {
     </div>
   )
 }
-const CALLBACK_URL = '/board/heyy-hello'
+
 function SignIn() {
   const [selected, setSelected] = useState<string>('')
   return (
@@ -24,6 +25,7 @@ function SignIn() {
       value={selected}
       onChange={async (value) => {
         setSelected(value)
+        const CALLBACK_URL = `/board/${getBoardId()}`
         if (value === 'Random User') {
           await signIn('credentials', {
             email: 'random.user@example.com',
