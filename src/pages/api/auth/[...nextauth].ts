@@ -1,6 +1,7 @@
 import NextAuth, { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import GithubProvider from 'next-auth/providers/github'
+import { getRandomUser } from '@/utils/getRandomData'
 
 export const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET
 
@@ -33,10 +34,7 @@ export const authOptions: NextAuthOptions = {
         if (!credentials) {
           return null
         }
-        return {
-          id: 'random-id',
-          name: 'Random User 🌍'
-        }
+        return getRandomUser()
       }
     })
   ],

@@ -2,6 +2,7 @@ import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { getServerSession } from 'next-auth'
 import { User } from '@/types/user'
+import { getRandomAvatar } from '@/utils/getRandomData'
 import { authOptions } from './api/auth/[...nextauth]'
 import { Layout } from '@/components/layout'
 import { HeaderToolbar } from '@/components/header-toolbar'
@@ -64,13 +65,13 @@ interface ServerSideProps {
 
 export const getServerSideProps: GetServerSideProps<ServerSideProps> = async ({ req, res }) => {
   const session = await getServerSession(req, res, authOptions)
-  const user = session?.user
+  const user = session?.user as User
   let userInfo = null
   if (user) {
     userInfo = {
       user: {
         ...user,
-        avatar: user.image ?? 'https://unavatar.io/d3vcloud'
+        avatar: user.avatar ?? getRandomAvatar()
       },
       status: 1
     }
