@@ -16,16 +16,24 @@ export function AuthBar({ user }: AuthBarProps) {
     </div>
   )
 }
-
+const CALLBACK_URL = '/board/heyy-hello'
 function SignIn() {
   const [selected, setSelected] = useState<string>('')
   return (
     <Listbox
       value={selected}
-      onChange={(value) => {
+      onChange={async (value) => {
         setSelected(value)
-        if (value === 'Random User') signIn('credentials', { email: 'random.user@example.com' })
-        else if (value === 'Github') signIn('github')
+        if (value === 'Random User') {
+          await signIn('credentials', {
+            email: 'random.user@example.com',
+            callbackUrl: CALLBACK_URL
+          })
+        } else if (value === 'Github') {
+          signIn('github', {
+            callbackUrl: CALLBACK_URL
+          })
+        }
       }}
     >
       <Listbox.Label className='font-semibold text-white w-64 text-base sm:text-sm'>

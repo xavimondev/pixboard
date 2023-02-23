@@ -7,9 +7,6 @@ export const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET
 
 export const authOptions: NextAuthOptions = {
   secret: NEXTAUTH_SECRET,
-  pages: {
-    signIn: '/'
-  },
   providers: [
     GithubProvider({
       clientId: process.env.GITHUB_CLIENT_ID || '',
