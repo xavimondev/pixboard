@@ -8,3 +8,4 @@ export const getRandomUser = () => {
 }
 
 export const getRandomAvatar = () => faker.image.avatar()
+export const getRandomColor = () => faker.color.rgb({ format: 'css' })
