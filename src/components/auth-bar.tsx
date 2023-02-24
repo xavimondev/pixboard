@@ -12,7 +12,7 @@ type AuthBarProps = {
 
 export function AuthBar({ user }: AuthBarProps) {
   return (
-    <div className='fixed flex items-center left-0 right-0 bottom-9 rounded-3xl bg-neutral-800 z-20 w-4/5 m-auto sm:w-80 px-7 py-2.5'>
+    <div className='fixed flex items-center left-0 right-0 bottom-9 rounded-3xl bg-neutral-800 z-20 w-4/5 m-auto sm:w-80 px-7 py-2.5 shadow-md'>
       {user ? <SignOut user={user} /> : <SignIn />}
     </div>
   )
@@ -42,7 +42,7 @@ function SignIn() {
         Login using:
       </Listbox.Label>
       <div className='relative w-80'>
-        <Listbox.Button className='w-full cursor-default rounded-lg bg-neutral-700 py-1.5 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 text-base sm:text-sm'>
+        <Listbox.Button className='w-full cursor-default rounded-lg bg-neutral-700 py-1.5 pl-3 pr-10 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 text-base sm:text-sm'>
           <span className='block truncate font-medium text-white'>{selected || 'Choose auth'}</span>
           <span className='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2'>
             <ChevronUpDownIc className='h-5 w-5 text-gray-400' />
@@ -88,7 +88,7 @@ type SignOutProps = {
 function SignOut({ user }: SignOutProps) {
   const { name, avatar = '' } = user
   return (
-    <div className='flex flex-row items-center justify-between w-full shadow-md'>
+    <div className='flex flex-row items-center justify-between w-full'>
       <div className='flex flex-row space-x-6 items-center'>
         <div className='relative w-7 h-7'>
           <Image src={avatar} width='100' height='100' className='rounded-full' alt={name} />
