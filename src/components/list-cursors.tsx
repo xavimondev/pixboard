@@ -3,8 +3,6 @@ import { Cursor } from './cursor'
 
 export function ListCursors() {
   const others = useStore((state) => state.liveblocks.others)
-  const setCursor = useStore((state) => state.setCursor)
-
   return (
     <>
       {others.map((user) => {
@@ -20,7 +18,6 @@ export function ListCursors() {
             name={info?.name}
             x={presence.cursor.x}
             y={presence.cursor.y}
-            setCursor={setCursor}
           />
         )
       })}

@@ -6,17 +6,15 @@ type CursorProps = {
   name: string
   x: number
   y: number
-  setCursor: (cursor: any) => void
 }
 
-export function Cursor({ color, name, x, y, setCursor }: CursorProps) {
+export function Cursor({ color, name, x, y }: CursorProps) {
   const textColor = useMemo(() => (color ? getContrastingColor(color) : undefined), [color])
 
   return (
     <div
       className='absolute top-0 left-0 transform duration-[120ms] ease-linear'
       style={{ transform: `translate(${x}px, ${y}px` }}
-      onPointerMove={(e) => setCursor({ x: e.clientX, y: e.clientY })}
     >
       <svg fill='none' viewBox='0 0 16 16' className='h-6 w-6'>
         <path
