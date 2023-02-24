@@ -7,8 +7,8 @@ export default function BoardView() {
   const {
     liveblocks: { enterRoom, leaveRoom }
   } = useStore()
-
   const { query } = useRouter()
+  const setCursor = useStore((state) => state.setCursor)
 
   useEffect(() => {
     if (!query.id) return
@@ -21,8 +21,10 @@ export default function BoardView() {
   }, [query.id])
 
   return (
-    <div>
-      <h1>Lookin at {query.id}</h1>
+    <div
+      className='relative min-h-screen w-full'
+      onPointerMove={(e) => setCursor({ x: e.clientX, y: e.clientY })}
+    >
       <ListCursors />
     </div>
   )
