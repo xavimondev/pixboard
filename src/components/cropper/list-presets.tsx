@@ -1,5 +1,5 @@
-import { PRESETS } from '@/utils/constants'
 import React from 'react'
+import { PRESETS } from '@/utils/constants'
 
 type PresetButtonProps = {
   onClick: () => void
@@ -23,7 +23,7 @@ type ListPresetButtonProps = {
   presetSelected: string
 }
 
-export function PresetButtons({ handlePreset, presetSelected }: ListPresetButtonProps) {
+export function ListPresets({ handlePreset, presetSelected }: ListPresetButtonProps) {
   return (
     <div className='flex gap-3 flex-wrap'>
       {PRESETS.map((preset) => (
