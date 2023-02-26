@@ -48,7 +48,6 @@ export default function Home({ userInfo }: BoardProps) {
         />
       </Head>
       <Layout user={userInfo.user}>
-        {/* <Room /> */}
         <HeaderToolbar />
         <AuthBar user={userInfo.user} />
       </Layout>
