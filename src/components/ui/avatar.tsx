@@ -2,14 +2,18 @@ import Image from 'next/image'
 
 type AvatarProps = {
   name: string
-  githubId: string
+  avatar: string
+  color: string
 }
 
-export function Avatar({ name, githubId }: AvatarProps) {
+export function Avatar({ name, avatar, color }: AvatarProps) {
   return (
     <Image
-      className='w-7 h-7 sm:w-9 sm:h-9 border-2 border-white rounded-full dark:border-gray-800 bg-blue-700'
-      src={`https://unavatar.io/${githubId}`}
+      className='w-7 h-7 sm:w-9 sm:h-9 border-2 border-white rounded-full dark:border-gray-800'
+      style={{
+        backgroundColor: color
+      }}
+      src={avatar}
       width='100'
       height='100'
       alt={name}
