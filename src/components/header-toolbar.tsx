@@ -1,4 +1,4 @@
-import { ListUsers } from './list-users'
+import { AvatarsBar } from './avatars-bar'
 
 export function HeaderToolbar() {
   return (
@@ -6,7 +6,7 @@ export function HeaderToolbar() {
       <div className='bg-neutral-800 p-2.5 px-7 rounded-full flex text-white shadow-sm'>
         <span className='font-semibold text-lg'>Pixboard.io</span>
       </div>
-      <ListUsers />
+      <AvatarsBar />
     </header>
   )
 }
