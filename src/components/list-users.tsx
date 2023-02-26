@@ -43,7 +43,7 @@ export function ListUsers() {
   // )
   // console.log(users)
   return (
-    <div className='bg-white p-2.5 rounded-full flex -space-x-3.5'>
+    <div className='bg-neutral-800 p-2.5 rounded-full flex -space-x-3.5 shadow-sm'>
       {USERS.slice(0, MAX_USERS).map((user) => {
         console.log(user)
         return <Avatar key={user.id} name={user.name} githubId={user.githubId} />
