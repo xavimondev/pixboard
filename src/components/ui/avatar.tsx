@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import React from 'react'
 
 type AvatarProps = {
   name: string
@@ -6,7 +7,7 @@ type AvatarProps = {
   color: string
 }
 
-export function Avatar({ name, avatar, color }: AvatarProps) {
+export const Avatar = React.memo(function Avatar({ name, avatar, color }: AvatarProps) {
   return (
     <Image
       className='w-7 h-7 sm:w-9 sm:h-9 border-2 border-white rounded-full dark:border-gray-800'
@@ -19,7 +20,7 @@ export function Avatar({ name, avatar, color }: AvatarProps) {
       alt={name}
     />
   )
-}
+})
 
 type AvatarEllipsisProps = {
   size: number
