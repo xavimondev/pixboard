@@ -4,7 +4,8 @@ import { nanoid } from 'nanoid'
 export const getRandomUser = () => {
   return {
     id: faker.datatype.uuid(),
-    name: faker.internet.userName()
+    name: faker.internet.userName(),
+    image: faker.image.avatar()
   }
 }
 
