@@ -58,7 +58,6 @@ export function Cropper() {
   const [dimensions, setDimensions] = useState<Dimensions>(initialDimensions)
   const [presetSelected, setPresetSelected] = useState<string>('original')
   const [cropValues, setCropValues] = useState<Crop>(initialCrop)
-  const [isCropMoved, setIsCropMoved] = useState<boolean>(false)
 
   const handleDimensions = useCallback((e: React.SyntheticEvent<HTMLImageElement>) => {
     const { width, height } = e.currentTarget
@@ -117,17 +116,7 @@ export function Cropper() {
     <>
       <ListPresets handlePreset={handlePreset} presetSelected={presetSelected} />
       <div className='w-[480px] max-h-[590px] mt-3 border-1 '>
-        <ReactCrop
-          crop={cropValues}
-          onChange={(c) => setCropValues(c)}
-          keepSelection
-          ruleOfThirds
-          onDragStart={(e: PointerEvent) => {
-            if (!isCropMoved) {
-              setIsCropMoved(true)
-            }
-          }}
-        >
+        <ReactCrop crop={cropValues} onChange={(c) => setCropValues(c)} keepSelection ruleOfThirds>
           <ImageResult setDimensions={handleDimensions} />
         </ReactCrop>
       </div>
