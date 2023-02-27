@@ -2,11 +2,8 @@ import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { getServerSession } from 'next-auth'
 import { User } from '@/types/user'
-import { getRandomAvatar } from '@/utils/getRandomData'
 import { authOptions } from './api/auth/[...nextauth]'
 import { Layout } from '@/components/layout'
-import { HeaderToolbar } from '@/components/header-toolbar'
-import { AuthBar } from '@/components/auth-bar'
 
 type BoardProps = {
   userInfo: {
@@ -47,10 +44,7 @@ export default function Home({ userInfo }: BoardProps) {
           content='A realtime collaboration tool for editing images'
         />
       </Head>
-      <Layout user={userInfo.user}>
-        <HeaderToolbar />
-        <AuthBar user={userInfo.user} />
-      </Layout>
+      <Layout user={userInfo.user} />
     </>
   )
 }
@@ -70,7 +64,7 @@ export const getServerSideProps: GetServerSideProps<ServerSideProps> = async ({ 
     userInfo = {
       user: {
         ...user,
-        avatar: user.avatar ?? getRandomAvatar()
+        avatar: user.avatar
       },
       status: 1
     }
