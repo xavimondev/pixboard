@@ -1,3 +1,5 @@
+import { Crop } from 'react-image-crop'
+
 export const PRESETS = [
   {
     id: 'original',
@@ -30,3 +32,11 @@ export const PRESETS = [
     value: 9 / 16
   }
 ]
+
+export const DEFAULT_VALUE_CROP: Crop = {
+  unit: '%',
+  x: 0,
+  y: 0,
+  width: 100,
+  height: 100
+}

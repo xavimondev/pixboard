@@ -2,12 +2,18 @@ import { create } from 'zustand'
 import { createClient } from '@liveblocks/client'
 import { liveblocks } from '@liveblocks/zustand'
 import type { WithLiveblocks } from '@liveblocks/zustand'
+import type { Crop } from 'react-image-crop'
+import { DEFAULT_VALUE_CROP } from '@/utils/constants'
 
 type Cursor = { x: number; y: number }
 
 type State = {
   cursor: Cursor
   setCursor: (cursor: Cursor) => void
+  cropValue: Crop
+  setCropValue: (cropValue: Crop) => void
+  presetSelected: string
+  setPresetSelected: (preset: string) => void
 }
 
 const client = createClient({
@@ -42,12 +48,20 @@ const useStore = create<WithLiveblocks<State>>()(
   liveblocks(
     (set) => ({
       cursor: { x: 0, y: 0 },
-      setCursor: (cursor) => set({ cursor })
+      cropValue: DEFAULT_VALUE_CROP,
+      presetSelected: 'original',
+      setCursor: (cursor) => set({ cursor }),
+      setCropValue: (cropValue: Crop) => set({ cropValue }),
+      setPresetSelected: (presetSelected: string) => set({ presetSelected })
     }),
     {
       client,
       presenceMapping: {
         cursor: true
+      },
+      storageMapping: {
+        cropValue: true,
+        presetSelected: true
       }
     }
   )

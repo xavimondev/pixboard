@@ -2,9 +2,10 @@ import React, { useCallback, useState } from 'react'
 import { Cloudinary } from '@cloudinary/url-gen'
 import { scale, fill, crop } from '@cloudinary/url-gen/actions/resize'
 import { center } from '@cloudinary/url-gen/qualifiers/textAlignment'
-import ReactCrop, { Crop, makeAspectCrop, centerCrop } from 'react-image-crop'
+import ReactCrop, { makeAspectCrop, centerCrop } from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
-import { PRESETS } from '@/utils/constants'
+import { DEFAULT_VALUE_CROP, PRESETS } from '@/utils/constants'
+import useStore from '@/state/store'
 import { ListPresets } from './cropper/list-presets'
 import { ImageResult } from './image-result'
 
@@ -32,14 +33,6 @@ function centerAspectCrop(mediaWidth: number, mediaHeight: number, aspect: numbe
   )
 }
 
-const initialCrop: Crop = {
-  unit: '%',
-  x: 0,
-  y: 0,
-  width: 100,
-  height: 100
-}
-
 type Dimensions = {
   renderedWidth: number
   renderedHeight: number
@@ -56,8 +49,11 @@ const initialDimensions = {
 
 export function Cropper() {
   const [dimensions, setDimensions] = useState<Dimensions>(initialDimensions)
-  const [presetSelected, setPresetSelected] = useState<string>('original')
-  const [cropValues, setCropValues] = useState<Crop>(initialCrop)
+  // const [presetSelected, setPresetSelected] = useState<string>('original')
+  const cropValue = useStore((state) => state.cropValue)
+  const setCropValue = useStore((state) => state.setCropValue)
+  const presetSelected = useStore((state) => state.presetSelected)
+  const setPresetSelected = useStore((state) => state.setPresetSelected)
 
   const handleDimensions = useCallback((e: React.SyntheticEvent<HTMLImageElement>) => {
     const { width, height } = e.currentTarget
@@ -69,7 +65,7 @@ export function Cropper() {
   }, [])
 
   const handleTransformation = () => {
-    const { x, y, width: widthCrop, height: heightCrop, unit } = cropValues
+    const { x, y, width: widthCrop, height: heightCrop, unit } = cropValue
     const { originalHeight, originalWidth, renderedWidth, renderedHeight } = dimensions
 
     let newImage = null
@@ -106,17 +102,19 @@ export function Cropper() {
 
     const { id, value } = presetSelected
     const crop =
-      id === 'original' ? initialCrop : centerAspectCrop(renderedWidth, renderedHeight, value)
+      id === 'original'
+        ? DEFAULT_VALUE_CROP
+        : centerAspectCrop(renderedWidth, renderedHeight, value)
 
     setPresetSelected(id)
-    setCropValues(crop)
+    setCropValue(crop)
   }
 
   return (
     <>
       <ListPresets handlePreset={handlePreset} presetSelected={presetSelected} />
       <div className='w-[480px] max-h-[590px] mt-3 border-1 '>
-        <ReactCrop crop={cropValues} onChange={(c) => setCropValues(c)} keepSelection ruleOfThirds>
+        <ReactCrop crop={cropValue} onChange={(c) => setCropValue(c)} keepSelection ruleOfThirds>
           <ImageResult setDimensions={handleDimensions} />
         </ReactCrop>
       </div>
