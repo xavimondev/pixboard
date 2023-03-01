@@ -46,7 +46,7 @@ export function UserIc(props: SVGProps<SVGSVGElement>) {
 
 export function LogoutIc(props: SVGProps<SVGSVGElement>) {
   return (
-    <svg height='21' viewBox='0 0 21 21' width='21' xmlns='http://www.w3.org/2000/svg' {...props}>
+    <svg viewBox='0 0 21 21' xmlns='http://www.w3.org/2000/svg' {...props}>
       <g
         fill='none'
         fillRule='evenodd'
@@ -59,6 +59,108 @@ export function LogoutIc(props: SVGProps<SVGSVGElement>) {
         <path d='m13.5 7.5h-9' />
         <path d='m10.5.5-8 .00224609c-1.1043501.00087167-1.9994384.89621131-2 2.00056153v9.99438478c0 1.1045695.8954305 2 2 2h8.0954792' />
       </g>
+    </svg>
+  )
+}
+
+export function CropIc(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      strokeWidth='1.5'
+      viewBox='0 0 24 24'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      color='#000000'
+      {...props}
+    >
+      <path
+        d='M21 18H6V3'
+        stroke='currentColor'
+        strokeWidth='1.5'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+      <path
+        d='M3 6h15v15'
+        stroke='currentColor'
+        strokeWidth='1.5'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+    </svg>
+  )
+}
+
+export function BlurIc(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox='0 0 24 24'
+      strokeWidth='1.5'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      color='#000000'
+      {...props}
+    >
+      <path
+        d='M20 14c0-4.418-8-12-8-12S4 9.582 4 14a8 8 0 1016 0z'
+        stroke='currentColor'
+        strokeWidth='1.5'
+      />
+    </svg>
+  )
+}
+
+export function TextIc(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      stroke-width='1.5'
+      viewBox='0 0 24 24'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      color='#000000'
+      {...props}
+    >
+      <path
+        d='M21 3.6v16.8a.6.6 0 01-.6.6H3.6a.6.6 0 01-.6-.6V3.6a.6.6 0 01.6-.6h16.8a.6.6 0 01.6.6z'
+        stroke='currentColor'
+        strokeWidth='1.5'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+      <path
+        d='M7 9V7h10v2M12 7v10m0 0h-2m2 0h2'
+        stroke='currentColor'
+        strokeWidth='1.5'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+    </svg>
+  )
+}
+
+export function EffectsIc(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox='0 0 24 24'
+      stroke-width='1.5'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      color='#000000'
+      {...props}
+    >
+      <path
+        d='M3 21l10-10m5-5l-2.5 2.5'
+        stroke='currentColor'
+        strokeWidth='1.5'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+      <path
+        d='M9.5 2l.945 2.555L13 5.5l-2.555.945L9.5 9l-.945-2.555L6 5.5l2.555-.945L9.5 2zM19 10l.54 1.46L21 12l-1.46.54L19 14l-.54-1.46L17 12l1.46-.54L19 10z'
+        stroke='currentColor'
+        strokeWidth='1.5'
+        strokeLinejoin='round'
+      />
     </svg>
   )
 }
