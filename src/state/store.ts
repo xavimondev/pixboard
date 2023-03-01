@@ -3,8 +3,8 @@ import { createClient } from '@liveblocks/client'
 import { liveblocks } from '@liveblocks/zustand'
 import type { WithLiveblocks } from '@liveblocks/zustand'
 import type { Crop } from 'react-image-crop'
+import type { Coordinates, Dimensions } from '@/types/board'
 import { DEFAULT_VALUE_CROP } from '@/utils/constants'
-import { Coordinates, SelectedTextObject } from '@/types/board'
 
 type Cursor = { x: number; y: number }
 
@@ -17,9 +17,15 @@ type State = {
   setPresetSelected: (preset: string) => void
   textBoxObjects: any
   addTextBoxObject: (objectText: any) => void
-  updateTextObject: (id: string, coordinates: Coordinates) => void
-  selectedTextObject: SelectedTextObject
-  setSelectedObject: (selectedTextObject: SelectedTextObject) => void
+  selectedOverlay: string | null
+  isDragging: boolean
+  onPointerOverlayDown: (overlayId: string) => void
+  onOverlayDragging: (coordinates: Coordinates) => void
+  isFirstRender: boolean
+  setIsFirstRender: (isFirstRender: boolean) => void
+  onPointerOverlayUp: () => void
+  isTyping: boolean
+  onOverlayTyping: (dimensions: Dimensions) => void
 }
 
 const client = createClient({
@@ -57,34 +63,56 @@ const useStore = create<WithLiveblocks<State>>()(
       cropValue: DEFAULT_VALUE_CROP,
       presetSelected: 'original',
       textBoxObjects: [],
-      selectedTextObject: {
-        id: null,
-        coordinates: {
-          x: 0,
-          y: 0
-        }
-      },
+      isDragging: false,
+      selectedOverlay: null,
+      isFirstRender: true,
+      isTyping: false,
+      isScaling: false,
       setCursor: (cursor) => set({ cursor }),
       setCropValue: (cropValue: Crop) => set({ cropValue }),
       setPresetSelected: (presetSelected: string) => set({ presetSelected }),
       addTextBoxObject: (objectText: any) =>
         set((prev) => ({ textBoxObjects: prev.textBoxObjects.concat(objectText) })),
-      updateTextObject: (id: string, coordinates: Coordinates) => {
-        const { textBoxObjects } = get()
-        const { x, y } = coordinates
-        const textBoxObjectsAux = textBoxObjects.map((objValue: any) => {
-          if (objValue.id === id) {
-            return {
-              ...objValue,
-              top: y,
-              left: x
-            }
-          }
-          return objValue
-        })
-        set({ textBoxObjects: textBoxObjectsAux })
+      onPointerOverlayUp: () => set({ isDragging: false }),
+      onPointerOverlayDown: (overlayId: string) => {
+        set({ selectedOverlay: overlayId })
       },
-      setSelectedObject: (selectedTextObject: SelectedTextObject) => set({ selectedTextObject })
+      onOverlayDragging: (coordinates: Coordinates) => {
+        const { textBoxObjects, selectedOverlay } = get()
+        const { x, y } = coordinates
+        if (selectedOverlay) {
+          const textBoxObjectsMapped = textBoxObjects.map((objValue: any) => {
+            if (objValue.id === selectedOverlay) {
+              return {
+                ...objValue,
+                top: y,
+                left: x
+              }
+            }
+            return objValue
+          })
+          set({ textBoxObjects: textBoxObjectsMapped, isDragging: true })
+        }
+      },
+      setIsFirstRender: (isFirstRender: boolean) => set({ isFirstRender }),
+      onOverlayTyping: (dimensions: Dimensions) => {
+        const { textBoxObjects, selectedOverlay } = get()
+        const { width, height, text } = dimensions
+        if (selectedOverlay) {
+          const textBoxObjectsMapped = textBoxObjects.map((objValue: any) => {
+            if (objValue.id === selectedOverlay) {
+              return {
+                ...objValue,
+                width,
+                height,
+                text: text ?? objValue.text
+              }
+            }
+            return objValue
+          })
+          set({ textBoxObjects: textBoxObjectsMapped, isTyping: true })
+        }
+      }
     }),
     {
       client,
@@ -95,7 +123,9 @@ const useStore = create<WithLiveblocks<State>>()(
         cropValue: true,
         presetSelected: true,
         textBoxObjects: true,
-        selectedTextObject: true
+        selectedOverlay: true,
+        isDragging: true,
+        isTyping: true
       }
     }
   )
