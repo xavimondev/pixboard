@@ -1,12 +1,16 @@
-import { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Cloudinary, Transformation } from '@cloudinary/url-gen'
 import { fabric } from 'fabric'
+import { nanoid } from 'nanoid'
 import { source } from '@cloudinary/url-gen/actions/overlay'
 import { text } from '@cloudinary/url-gen/qualifiers/source'
 import { TextStyle } from '@cloudinary/url-gen/qualifiers/textStyle'
 import { compass } from '@cloudinary/url-gen/qualifiers/gravity'
 import { Position } from '@cloudinary/url-gen/qualifiers/position'
 import { fill } from '@cloudinary/url-gen/actions/resize'
+import useStore from '@/state/store'
+import { Coordinates } from '@/types/board'
+import type { IText } from 'fabric/fabric-impl'
 
 const cld = new Cloudinary({
   cloud: {
@@ -15,10 +19,35 @@ const cld = new Cloudinary({
 })
 
 const myImage = cld.image('01_ntrcum')
-
-export function TextOverlay() {
+const valuesTextBox: fabric.ITextOptions = {
+  isNew: true,
+  fontSize: 22,
+  fontFamily: 'Arial',
+  textAlign: 'left',
+  width: 110,
+  top: 20,
+  left: 10,
+  padding: 1,
+  editingBorderColor: 'white',
+  cornerStyle: 'circle',
+  cornerColor: 'white',
+  cornerSize: 7,
+  cornerStrokeColor: 'white',
+  hasBorders: true,
+  borderDashArray: [4],
+  borderColor: 'red'
+}
+export const TextOverlay = React.memo(function TextOverlay() {
   const canvasEl = useRef<HTMLCanvasElement>(null)
   const [canvasFabric, setCanvasFabric] = useState<fabric.Canvas | undefined>(undefined)
+  const textBoxObjects = useStore((state) => state.textBoxObjects)
+  const addTextBoxObject = useStore((state) => state.addTextBoxObject)
+  const updateTextObject = useStore((state) => state.updateTextObject)
+  const setSelectedObject = useStore((state) => state.setSelectedObject)
+  const selectedTextObject = useStore((state) => state.selectedTextObject)
+  const isFirstRender = useRef<boolean>(true)
+  const currentUser = useStore((state) => state.liveblocks.room?.getSelf())
+
   useEffect(() => {
     if (!canvasEl.current) return
 
@@ -37,6 +66,31 @@ export function TextOverlay() {
         fabricCanvas.setWidth(canvasWidth)
         fabricCanvas.setBackgroundImage(fabricImg, (img: any) => {})
         fabricCanvas.selection = false
+        fabricCanvas
+          .on('object:moving', (event) => {
+            const elemenTarget = event.target
+            const { id, top, left } = elemenTarget
+            if (elemenTarget) {
+              // console.log(`This object moving: ${id} - ${top} - ${left}`)
+              const coordinates: Coordinates = {
+                x: left,
+                y: top
+              }
+              // updateTextObject(id, coordinates)
+              // setSelectedObject({
+              //   id,
+              //   coordinates
+              // })
+            }
+          })
+          .on('object:scaling', (event) => {
+            const elmTarget = event.target
+            console.log(elmTarget?.getScaledWidth(), elmTarget?.getScaledHeight())
+          })
+          .on('text:changed', (event) => {
+            const elmTarget = event.target
+            console.log(elmTarget?.text, elmTarget?.getScaledWidth(), elmTarget?.getScaledHeight())
+          })
       }
     )
     return () => {
@@ -45,27 +99,56 @@ export function TextOverlay() {
     }
   }, [])
 
+  // console.log(textBoxObjects)
+  useEffect(() => {
+    if (!canvasFabric) return
+    if (textBoxObjects.length === 0) return
+
+    const objectOwner = textBoxObjects.at(-1).owner
+
+    if (!isFirstRender.current && objectOwner !== currentUser?.id) {
+      const textBox = new fabric.IText('Enter Text', valuesTextBox)
+      textBox.set('editable', true)
+      textBox.setControlsVisibility({ mt: false, mb: false, mtr: false }) // controls textbox
+      canvasFabric.add(textBox)
+      canvasFabric.renderAll()
+    }
+
+    // const objectCreated = canvasFabric.getObjects().find((obj) => obj.id === selectedTextObject.id)
+    // if (objectCreated) {
+    //   const { x, y } = selectedTextObject.coordinates
+    //   // console.log('This object exists! Just move it')
+    //   const currentObject = objectCreated as IText
+    //   currentObject.set('top', y)
+    //   currentObject.set('left', x)
+    //   currentObject.set('editable', true)
+    //   currentObject.set('isNew', false)
+    //   canvasFabric.renderAll()
+    // }
+  }, [textBoxObjects.length])
+
+  useEffect(() => {
+    if (textBoxObjects.length === 0) return
+    if (isFirstRender.current) {
+      console.log('usEffect general objects')
+      textBoxObjects.forEach((obj: any) => {
+        const textBox = new fabric.IText('Enter Text', obj)
+        textBox.setControlsVisibility({ mt: false, mb: false, mtr: false }) // controls textbox
+        if (canvasFabric) {
+          canvasFabric.add(textBox)
+          canvasFabric.renderAll()
+          isFirstRender.current = false
+        }
+      })
+    }
+  }, [textBoxObjects])
+
   const addText = () => {
-    // TODO: Add store
-    const textBox = new fabric.IText('Enter Text', {
-      fontSize: 22,
-      fontFamily: 'Arial',
-      textAlign: 'left',
-      width: 110,
-      top: 20,
-      left: 10,
-      editable: true,
-      padding: 1,
-      editingBorderColor: 'white',
-      cornerStyle: 'circle',
-      cornerColor: 'white',
-      cornerSize: 7,
-      cornerStrokeColor: 'white',
-      hasBorders: true,
-      borderDashArray: [4],
-      borderColor: 'red'
-      // splitByGrapheme: true // wrap text when exceed text
-    })
+    // TODO: Extend interface ITextOptions
+    const idTextBox = nanoid(4)
+    valuesTextBox.id = idTextBox
+    valuesTextBox.owner = currentUser.id
+    const textBox = new fabric.IText('Enter Text', valuesTextBox)
     // hide rotation control
     textBox.setControlsVisibility({ mt: false, mb: false, mtr: false }) // controls textbox
     if (canvasFabric) {
@@ -74,6 +157,7 @@ export function TextOverlay() {
       // canvasFabric.viewportCenterObjectH(textBox)
       canvasFabric.renderAll()
     }
+    addTextBoxObject(valuesTextBox)
   }
 
   const handleTransformation = () => {
@@ -83,7 +167,7 @@ export function TextOverlay() {
     // Adding overlay dinamically on canvas
     canvasFabric?.getObjects().forEach((object) => {
       const { text: textEntered, fontFamily, fontSize } = object
-      const { x, y } = object.getCoords()[0]
+      const { x, y } = object.getCoords()[0] // TODO: Change this for top and left
       const xCoordinate = Math.floor(x * scaleX)
       const yCoordinate = Math.floor(y * scaleY)
       imageUrl.overlay(
@@ -99,6 +183,7 @@ export function TextOverlay() {
 
     console.log(imageUrl.toURL())
   }
+
   return (
     <>
       <div className='w-[480px] max-h-[590px] mt-3 border-1'>
@@ -129,4 +214,4 @@ export function TextOverlay() {
       </button>
     </>
   )
-}
+})
