@@ -26,6 +26,8 @@ type State = {
   onPointerOverlayUp: () => void
   isTyping: boolean
   onOverlayTyping: (dimensions: Dimensions) => void
+  urlImage: string
+  setUrlImage: (urlImage: string) => void
 }
 
 const client = createClient({
@@ -68,6 +70,7 @@ const useStore = create<WithLiveblocks<State>>()(
       isFirstRender: true,
       isTyping: false,
       isScaling: false,
+      urlImage: '',
       setCursor: (cursor) => set({ cursor }),
       setCropValue: (cropValue: Crop) => set({ cropValue }),
       setPresetSelected: (presetSelected: string) => set({ presetSelected }),
@@ -112,7 +115,8 @@ const useStore = create<WithLiveblocks<State>>()(
           })
           set({ textBoxObjects: textBoxObjectsMapped, isTyping: true })
         }
-      }
+      },
+      setUrlImage: (urlImage: string) => set({ urlImage })
     }),
     {
       client,
@@ -125,7 +129,8 @@ const useStore = create<WithLiveblocks<State>>()(
         textBoxObjects: true,
         selectedOverlay: true,
         isDragging: true,
-        isTyping: true
+        isTyping: true,
+        urlImage: true
       }
     }
   )
