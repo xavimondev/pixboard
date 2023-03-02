@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { uploadFile } from '@/utils/uploadFile'
+import useStore from '@/state/store'
 import { AddImageIc } from '@/components/icons'
 
 function DropzoneBody() {
@@ -17,11 +18,12 @@ function DropzoneBody() {
 
 export function Dropzone() {
   const [isUploading, setIsUploading] = useState<boolean>(false)
+  const setUrlImage = useStore((state) => state.setUrlImage)
   const onDrop = useCallback(async (files: File[]) => {
     const file = files[0]
     setIsUploading(true)
     const url = await uploadFile(file)
-    console.log(url)
+    setUrlImage(url)
     setIsUploading(false)
   }, [])
 
