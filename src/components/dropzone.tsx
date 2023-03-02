@@ -38,7 +38,7 @@ export function Dropzone() {
   return (
     <div
       {...getRootProps({ className: 'dropzone' })}
-      className='flex items-center justify-center mx-auto max-w-3xl border bg-neutral-800 border-gray-700 overflow-hidden h-[500px] z-0 rounded-xl shadow-sm hover:opacity-90 hover:border-dashed hover:border-2 hover:border-gray-400 hover:cursor-pointer'
+      className='w-full flex items-center justify-center bg-transparent overflow-hidden h-[500px] z-0 rounded-xl shadow-sm hover:opacity-90 hover:border-dashed hover:border-2 hover:border-gray-400 hover:cursor-pointer mb-8'
     >
       <input {...getInputProps()} />
       {isUploading ? <h2>Loading</h2> : <DropzoneBody />}
