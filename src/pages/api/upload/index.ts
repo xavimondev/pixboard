@@ -13,9 +13,12 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
     const uploadedImageResponse = await cloudinary.v2.uploader.upload(image, {
       folder: process.env.CLOUDINARY_FOLDER_IMAGES
     })
-    console.log(uploadedImageResponse)
+    const { secure_url, width, height, asset_id } = uploadedImageResponse
     return res.status(200).json({
-      url: uploadedImageResponse.secure_url
+      id: asset_id,
+      url: secure_url,
+      width,
+      height
     })
   } catch (error) {
     return res.status(500).json({
