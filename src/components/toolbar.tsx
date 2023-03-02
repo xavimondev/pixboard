@@ -1,14 +1,27 @@
-import React from 'react'
 import useStore from '@/state/store'
 import { BlurIc, CropIc, EffectsIc, TextIc } from './icons'
 import { PlaceHolder } from './placeholder'
 
+type Tool = 'crop' | 'overlay' | 'blur' | 'effects'
+
 type ToolbarItemProps = {
-  children: React.ReactNode
+  id: Tool
+  children: any
 }
 
-function ToolbarItem({ children }: ToolbarItemProps) {
-  return <button className='hover:bg-neutral-600 hover:rounded-md p-1.5'>{children}</button>
+function ToolbarItem({ id, children }: ToolbarItemProps) {
+  const toolSelected = useStore((state) => state.toolSelected)
+  const setToolSelected = useStore((state) => state.setToolSelected)
+  const bgColor =
+    toolSelected === id ? 'bg-sky-700/[0.5] text-sky-500 rounded-md' : 'hover:bg-neutral-600'
+  const textColor = toolSelected === id ? 'text-sky-500' : 'text-white'
+  return (
+    <>
+      <button className={`hover:rounded-md p-1.5 ${bgColor}`} onClick={() => setToolSelected(id)}>
+        {children(textColor)}
+      </button>
+    </>
+  )
 }
 
 export function Toolbar() {
@@ -20,17 +33,17 @@ export function Toolbar() {
           <PlaceHolder length={4} />
         ) : (
           <>
-            <ToolbarItem>
-              <CropIc className='h-5 w-5 text-white' />
+            <ToolbarItem id='crop'>
+              {(colorText: string) => <CropIc className={`h-5 w-5 ${colorText}`} />}
             </ToolbarItem>
-            <ToolbarItem>
-              <TextIc className='h-5 w-5 text-white' />
+            <ToolbarItem id='overlay'>
+              {(colorText: string) => <TextIc className={`h-5 w-5 ${colorText}`} />}
             </ToolbarItem>
-            <ToolbarItem>
-              <BlurIc className='h-5 w-5 text-white' />
+            <ToolbarItem id='blur'>
+              {(colorText: string) => <BlurIc className={`h-5 w-5 ${colorText}`} />}
             </ToolbarItem>
-            <ToolbarItem>
-              <EffectsIc className='h-5 w-5 text-white' />
+            <ToolbarItem id='effects'>
+              {(colorText: string) => <EffectsIc className={`h-5 w-5 ${colorText}`} />}
             </ToolbarItem>
           </>
         )}

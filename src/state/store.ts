@@ -28,6 +28,8 @@ type State = {
   onOverlayTyping: (dimensions: Dimensions) => void
   urlImage: string
   setUrlImage: (urlImage: string) => void
+  toolSelected: string
+  setToolSelected: (toolSelected: string) => void
 }
 
 const client = createClient({
@@ -71,6 +73,7 @@ const useStore = create<WithLiveblocks<State>>()(
       isTyping: false,
       isScaling: false,
       urlImage: '',
+      toolSelected: 'crop',
       setCursor: (cursor) => set({ cursor }),
       setCropValue: (cropValue: Crop) => set({ cropValue }),
       setPresetSelected: (presetSelected: string) => set({ presetSelected }),
@@ -116,7 +119,8 @@ const useStore = create<WithLiveblocks<State>>()(
           set({ textBoxObjects: textBoxObjectsMapped, isTyping: true })
         }
       },
-      setUrlImage: (urlImage: string) => set({ urlImage })
+      setUrlImage: (urlImage: string) => set({ urlImage }),
+      setToolSelected: (toolSelected: string) => set({ toolSelected })
     }),
     {
       client,
