@@ -10,7 +10,9 @@ cloudinary.v2.config({
 export default async function auth(req: NextApiRequest, res: NextApiResponse) {
   try {
     const image = req.body.imageBase64
-    const uploadedImageResponse = await cloudinary.v2.uploader.upload(image)
+    const uploadedImageResponse = await cloudinary.v2.uploader.upload(image, {
+      folder: process.env.CLOUDINARY_FOLDER_IMAGES
+    })
     console.log(uploadedImageResponse)
     return res.status(200).json({
       url: uploadedImageResponse.secure_url
