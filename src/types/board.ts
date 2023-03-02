@@ -20,3 +20,9 @@ export type PresetImage = {
   height: string
   url: string
 }
+
+export type MainImage = {
+  imageData: PresetImage
+  renderedWidth?: number
+  renderedHeight?: number
+}
