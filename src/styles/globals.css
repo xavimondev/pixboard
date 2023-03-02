@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.bg-default-image {
+  background-color: rgba(142, 139, 139, 0.77);
+  background-image:  repeating-linear-gradient(45deg, #494646 25%, transparent 25%, transparent 75%, #494646 75%, #494646), repeating-linear-gradient(45deg, #494646 25%, rgba(142, 139, 139, 0.77) 25%, rgba(142, 139, 139, 0.77) 75%, #494646 75%, #494646);
+  background-position: 0 0, 8px 8px;
+  background-size: 16px 16px;
+}
