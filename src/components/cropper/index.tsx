@@ -6,8 +6,8 @@ import ReactCrop, { makeAspectCrop, centerCrop } from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
 import { DEFAULT_VALUE_CROP, PRESETS } from '@/utils/constants'
 import useStore from '@/state/store'
-import { ListPresets } from './cropper/list-presets'
-import { ImageResult } from './image-result'
+import { ListPresets } from './list-presets'
+import { ImageResult } from '../image-result'
 
 const cld = new Cloudinary({
   cloud: {
