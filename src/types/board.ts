@@ -16,8 +16,8 @@ export type Dimensions = {
 
 export type PresetImage = {
   id: string
-  width: string
-  height: string
+  width: number
+  height: number
   url: string
 }
 
