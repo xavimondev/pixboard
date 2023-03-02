@@ -9,5 +9,5 @@ export const uploadFile = async (file: File) => {
     }
   })
   const data = await response.json()
-  return data.url
+  return data
 }
