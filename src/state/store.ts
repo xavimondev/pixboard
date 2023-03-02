@@ -3,7 +3,7 @@ import { createClient } from '@liveblocks/client'
 import { liveblocks } from '@liveblocks/zustand'
 import type { WithLiveblocks } from '@liveblocks/zustand'
 import type { Crop } from 'react-image-crop'
-import type { Coordinates, Dimensions } from '@/types/board'
+import type { Coordinates, Dimensions, MainImage } from '@/types/board'
 import { DEFAULT_VALUE_CROP } from '@/utils/constants'
 
 type Cursor = { x: number; y: number }
@@ -26,8 +26,8 @@ type State = {
   onPointerOverlayUp: () => void
   isTyping: boolean
   onOverlayTyping: (dimensions: Dimensions) => void
-  urlImage: string
-  setUrlImage: (urlImage: string) => void
+  mainImage: MainImage | null
+  setMainImage: (mainImage: MainImage | null) => void
   toolSelected: string
   setToolSelected: (toolSelected: string) => void
 }
@@ -72,7 +72,7 @@ const useStore = create<WithLiveblocks<State>>()(
       isFirstRender: true,
       isTyping: false,
       isScaling: false,
-      urlImage: '',
+      mainImage: null,
       toolSelected: 'crop',
       setCursor: (cursor) => set({ cursor }),
       setCropValue: (cropValue: Crop) => set({ cropValue }),
@@ -119,7 +119,7 @@ const useStore = create<WithLiveblocks<State>>()(
           set({ textBoxObjects: textBoxObjectsMapped, isTyping: true })
         }
       },
-      setUrlImage: (urlImage: string) => set({ urlImage }),
+      setMainImage: (mainImage: MainImage | null) => set({ mainImage }),
       setToolSelected: (toolSelected: string) => set({ toolSelected })
     }),
     {
@@ -134,7 +134,7 @@ const useStore = create<WithLiveblocks<State>>()(
         selectedOverlay: true,
         isDragging: true,
         isTyping: true,
-        urlImage: true
+        mainImage: true
       }
     }
   )
