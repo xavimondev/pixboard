@@ -4,7 +4,11 @@ import useStore from '@/state/store'
 
 export const FinalImage = React.memo(function FinalImage() {
   const [isLoading, setLoading] = useState(true)
-  const urlImage = useStore((state) => state.urlImage)
+  const mainImage = useStore((state) => state.mainImage)
+
+  if (!mainImage) return null
+
+  const { url, width, height } = mainImage.imageData
 
   return (
     <>
@@ -13,9 +17,9 @@ export const FinalImage = React.memo(function FinalImage() {
         <div className='bg-default-image flex justify-center'>
           <CldImage
             alt='Garden weird'
-            src={urlImage}
-            width={500}
-            height={500}
+            src={url}
+            width={width}
+            height={height}
             className={`max-h-full max-w-full overflow-hidden object-cover duration-700 ease-in-out scale-100 relative z-10 ${
               isLoading ? 'grayscale blur-2xl' : 'grayscale-0 blur-0'
             }`}

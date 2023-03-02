@@ -2,12 +2,21 @@ import type { PresetImage } from '@/types/board'
 import { CldImage } from 'next-cloudinary'
 import useStore from '@/state/store'
 
-function PresetImageItem({ url, width, height }: PresetImage) {
-  const setUrlImage = useStore((state) => state.setUrlImage)
+function PresetImageItem({ id, url, width, height }: PresetImage) {
+  const setMainImage = useStore((state) => state.setMainImage)
   return (
     <button
       className='rounded-md border border-neutral-700 cursor-pointer transition ease-in-out hover:-translate-y-1'
-      onClick={() => setUrlImage(url)}
+      onClick={() =>
+        setMainImage({
+          imageData: {
+            id,
+            url,
+            width,
+            height
+          }
+        })
+      }
     >
       <figure>
         <CldImage

@@ -18,12 +18,15 @@ function DropzoneBody() {
 
 export function Dropzone() {
   const [isUploading, setIsUploading] = useState<boolean>(false)
-  const setUrlImage = useStore((state) => state.setUrlImage)
+  const setMainImage = useStore((state) => state.setMainImage)
+
   const onDrop = useCallback(async (files: File[]) => {
     const file = files[0]
     setIsUploading(true)
-    const url = await uploadFile(file)
-    setUrlImage(url)
+    const imageData = await uploadFile(file)
+    setMainImage({
+      imageData
+    })
     setIsUploading(false)
   }, [])
 
