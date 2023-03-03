@@ -1,4 +1,5 @@
 import React from 'react'
+import { usePreset } from '@/hooks/usePreset'
 import { PRESETS } from '@/utils/constants'
 
 type PresetButtonProps = {
@@ -18,12 +19,8 @@ function PresetButton({ onClick, bgClass, children }: PresetButtonProps) {
   )
 }
 
-type ListPresetButtonProps = {
-  handlePreset: (presetId: string) => void
-  presetSelected: string
-}
-
-export function ListPresets({ handlePreset, presetSelected }: ListPresetButtonProps) {
+export function ListPresets() {
+  const { handlePreset, presetSelected } = usePreset()
   return (
     <div className='flex gap-3 flex-wrap'>
       {PRESETS.map((preset) => (
