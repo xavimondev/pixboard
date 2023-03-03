@@ -2,7 +2,7 @@ import type { PresetImage } from '@/types/board'
 import { CldImage } from 'next-cloudinary'
 import useStore from '@/state/store'
 
-function PresetImageItem({ id, url, width, height }: PresetImage) {
+function PresetImageItem({ id, url, width, height, publicId }: PresetImage) {
   const setMainImage = useStore((state) => state.setMainImage)
   return (
     <button
@@ -13,7 +13,8 @@ function PresetImageItem({ id, url, width, height }: PresetImage) {
             id,
             url,
             width,
-            height
+            height,
+            publicId
           }
         })
       }
