@@ -4,7 +4,7 @@ import { center } from '@cloudinary/url-gen/qualifiers/textAlignment'
 
 const cld = new Cloudinary({
   cloud: {
-    cloudName: ''
+    cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
   }
 })
 
