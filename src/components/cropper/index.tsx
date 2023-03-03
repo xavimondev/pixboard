@@ -1,23 +1,19 @@
-import React from 'react'
 import ReactCrop from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
 import useStore from '@/state/store'
+import { OriginalImage } from '@/components/editor/original-image'
 import { ListPresets } from './list-presets'
 
-type CropperProps = {
-  children: React.ReactNode
-}
-
-export function Cropper({ children }: CropperProps) {
+export function Cropper() {
   const cropValue = useStore((state) => state.cropValue)
   const setCropValue = useStore((state) => state.setCropValue)
-
+  // w-[480px] max-h-[590px]
   return (
-    <div className='flex flex-col'>
+    <div className='flex flex-col sm:flex-row justify-center items-center w-full h-full sm:space-x-10'>
       <ListPresets />
-      <div className='w-[480px] max-h-[590px] mt-3 border-1 '>
+      <div className='mt-3 border-1 min-h-[400px] min-w-[600px] max-h-[600px] max-w-[800px] flex justify-center items-center bg-default-image'>
         <ReactCrop crop={cropValue} onChange={(c) => setCropValue(c)} keepSelection ruleOfThirds>
-          {children}
+          <OriginalImage />
         </ReactCrop>
       </div>
     </div>
