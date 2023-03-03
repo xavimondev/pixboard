@@ -1,8 +1,10 @@
+import type { fabric } from 'fabric'
 import useStore from '@/state/store'
 import {
   cropByAspectRatio,
   cropByCustomMeasures,
-  getImage
+  getImage,
+  overlayImage
 } from '@/utils/getUrlImageFromTransformations'
 
 export function useTransformation() {
@@ -31,9 +33,31 @@ export function useTransformation() {
       url = cropByCustomMeasures(image, widthProcessed, heightProcessed, xCrop, yCrop)
     }
     console.log(url)
+    return {
+      image,
+      url,
+      width: widthProcessed,
+      height: heightProcessed
+    }
+  }
+
+  const getUrlImageFromOverlay = (listTextoverlay: fabric.Object[]) => {
+    const { image, width, height } = getUrlImageFromCrop()
+    const scaleX = width / 480 // Original width / rendered Width
+    const scaleY = height / 393 // Original height / rendered Height
+
+    // Adding overlay dinamically on canvas
+    listTextoverlay.forEach((objectOverlay) => {
+      const { text, fontFamily, top, left } = objectOverlay
+      const xCoordinate = Math.floor(left! * scaleX)
+      const yCoordinate = Math.floor(top! * scaleY)
+      overlayImage(image, text, fontFamily, xCoordinate, yCoordinate)
+    })
+    console.log(image.toURL())
   }
 
   return {
-    getUrlImageFromCrop
+    getUrlImageFromCrop,
+    getUrlImageFromOverlay
   }
 }
