@@ -10,6 +10,7 @@ import { compass } from '@cloudinary/url-gen/qualifiers/gravity'
 import { Position } from '@cloudinary/url-gen/qualifiers/position'
 import { fill } from '@cloudinary/url-gen/actions/resize'
 import useStore from '@/state/store'
+import { ToolsOverlay } from './tools'
 
 const cld = new Cloudinary({
   cloud: {
@@ -190,7 +191,6 @@ export const TextOverlay = React.memo(function TextOverlay() {
   }, [textBoxObjects])
 
   const addText = () => {
-    // TODO: Extend interface ITextOptions
     const idTextBox = nanoid(4)
     valuesTextBox.id = idTextBox
     valuesTextBox.owner = currentUser.id
@@ -231,33 +231,11 @@ export const TextOverlay = React.memo(function TextOverlay() {
   }
 
   return (
-    <>
+    <div className='flex flex-col'>
+      <ToolsOverlay addText={addText} />
       <div className='w-[480px] max-h-[590px] mt-3 border-1'>
         <canvas width={480} height={393} ref={canvasEl} />
       </div>
-      <button
-        className='mt-2 px-5 py-1.5 rounded-3xl border-1 text-white p-2 bg-neutral-800 flex'
-        onClick={addText}
-      >
-        <svg
-          data-test='viewIcon'
-          className='h-8 w-8 text-white'
-          viewBox='0 0 24 24'
-          preserveAspectRatio='xMidYMid'
-        >
-          <path
-            fill='currentColor'
-            stroke='currentColor'
-            d='M8.0625,3.5625 L8.0625,6.9375 L13.6875,6.9375 L13.6875,20.4375 L17.0625,20.4375 L17.0625,6.9375 L22.6875,6.9375 L22.6875,3.5625 L8.0625,3.5625 Z M1.3125,12.5625 L4.6875,12.5625 L4.6875,20.4375 L8.0625,20.4375 L8.0625,12.5625 L11.4375,12.5625 L11.4375,9.1875 L1.3125,9.1875 L1.3125,12.5625 Z'
-          />
-        </svg>
-      </button>
-      <button
-        className='mt-2 px-5 py-1.5 rounded-3xl border-1 text-white p-2 bg-neutral-800 flex'
-        onClick={handleTransformation}
-      >
-        Next
-      </button>
-    </>
+    </div>
   )
 })
