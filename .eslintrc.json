@@ -3,6 +3,7 @@
   "rules": {
     "space-before-function-paren": "off",
     "camelcase": "off",
-    "multiline-ternary": "off"
+    "multiline-ternary": "off",
+    "react/jsx-curly-newline": "off"
   }
 }
