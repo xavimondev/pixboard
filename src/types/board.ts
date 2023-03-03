@@ -19,6 +19,7 @@ export type PresetImage = {
   width: number
   height: number
   url: string
+  publicId: string
 }
 
 export type MainImage = {
