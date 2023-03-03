@@ -15,7 +15,7 @@ export const OriginalImage = React.memo(function OriginalImage() {
       src={url}
       width={width}
       height={height}
-      className={`object-cover duration-700 ease-in-out scale-100 ${
+      className={`max-h-full max-w-full object-cover duration-700 ease-in-out scale-100 ${
         isLoading ? 'grayscale blur-2xl' : 'grayscale-0 blur-0'
       }`}
       onLoadingComplete={() => setLoading(false)}
