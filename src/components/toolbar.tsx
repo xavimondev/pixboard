@@ -1,3 +1,4 @@
+import { useTransformation } from '@/hooks/useTransformation'
 import useStore from '@/state/store'
 import { BlurIc, CropIc, EffectsIc, TextIc } from './icons'
 import { PlaceHolder } from './placeholder'
@@ -12,12 +13,28 @@ type ToolbarItemProps = {
 function ToolbarItem({ id, children }: ToolbarItemProps) {
   const toolSelected = useStore((state) => state.toolSelected)
   const setToolSelected = useStore((state) => state.setToolSelected)
+  const { getUrlImageFromCrop } = useTransformation()
   const bgColor =
     toolSelected === id ? 'bg-sky-700/[0.5] text-sky-500 rounded-md' : 'hover:bg-neutral-600'
   const textColor = toolSelected === id ? 'text-sky-500' : 'text-white'
+  const setImagetransformedData = useStore((state) => state.setImagetransformedData)
+
   return (
     <>
-      <button className={`hover:rounded-md p-1.5 ${bgColor}`} onClick={() => setToolSelected(id)}>
+      <button
+        className={`hover:rounded-md p-1.5 ${bgColor}`}
+        onClick={() => {
+          setToolSelected(id)
+          if (id === 'overlay') {
+            const { url, width, height } = getUrlImageFromCrop()
+            setImagetransformedData({
+              url,
+              width,
+              height
+            })
+          }
+        }}
+      >
         {children(textColor)}
       </button>
     </>
