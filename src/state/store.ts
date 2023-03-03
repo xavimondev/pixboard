@@ -3,6 +3,7 @@ import { createClient } from '@liveblocks/client'
 import { liveblocks } from '@liveblocks/zustand'
 import type { WithLiveblocks } from '@liveblocks/zustand'
 import type { Crop } from 'react-image-crop'
+import type { CloudinaryImage } from '@cloudinary/url-gen'
 import type { Coordinates, Dimensions, ImageTransformed, MainImage } from '@/types/board'
 import { DEFAULT_VALUE_CROP } from '@/utils/constants'
 
@@ -32,6 +33,8 @@ type State = {
   setToolSelected: (toolSelected: string) => void
   imageTransformedData: ImageTransformed | null
   setImagetransformedData: (imageTransformedData: ImageTransformed | null) => void
+  cloudinaryImage: CloudinaryImage | null
+  setCloudinaryImage: (cloudinaryImage: CloudinaryImage) => void
 }
 
 const client = createClient({
@@ -77,6 +80,7 @@ const useStore = create<WithLiveblocks<State>>()(
       mainImage: null,
       toolSelected: 'crop',
       imageTransformedData: null,
+      cloudinaryImage: null,
       setCursor: (cursor) => set({ cursor }),
       setCropValue: (cropValue: Crop) => set({ cropValue }),
       setPresetSelected: (presetSelected: string) => set({ presetSelected }),
@@ -125,7 +129,8 @@ const useStore = create<WithLiveblocks<State>>()(
       setMainImage: (mainImage: MainImage | null) => set({ mainImage }),
       setToolSelected: (toolSelected: string) => set({ toolSelected }),
       setImagetransformedData: (imageTransformedData: ImageTransformed | null) =>
-        set({ imageTransformedData })
+        set({ imageTransformedData }),
+      setCloudinaryImage: (cloudinaryImage: CloudinaryImage | null) => set({ cloudinaryImage })
     }),
     {
       client,
@@ -140,7 +145,8 @@ const useStore = create<WithLiveblocks<State>>()(
         isDragging: true,
         isTyping: true,
         mainImage: true,
-        imageTransformedData: true
+        imageTransformedData: true,
+        cloudinaryImage: true
       }
     }
   )
