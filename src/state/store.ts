@@ -3,7 +3,7 @@ import { createClient } from '@liveblocks/client'
 import { liveblocks } from '@liveblocks/zustand'
 import type { WithLiveblocks } from '@liveblocks/zustand'
 import type { Crop } from 'react-image-crop'
-import type { Coordinates, Dimensions, MainImage } from '@/types/board'
+import type { Coordinates, Dimensions, ImageTransformed, MainImage } from '@/types/board'
 import { DEFAULT_VALUE_CROP } from '@/utils/constants'
 
 type Cursor = { x: number; y: number }
@@ -30,6 +30,8 @@ type State = {
   setMainImage: (mainImage: MainImage | null) => void
   toolSelected: string
   setToolSelected: (toolSelected: string) => void
+  imageTransformedData: ImageTransformed | null
+  setImagetransformedData: (imageTransformedData: ImageTransformed | null) => void
 }
 
 const client = createClient({
@@ -74,6 +76,7 @@ const useStore = create<WithLiveblocks<State>>()(
       isScaling: false,
       mainImage: null,
       toolSelected: 'crop',
+      imageTransformedData: null,
       setCursor: (cursor) => set({ cursor }),
       setCropValue: (cropValue: Crop) => set({ cropValue }),
       setPresetSelected: (presetSelected: string) => set({ presetSelected }),
@@ -120,7 +123,9 @@ const useStore = create<WithLiveblocks<State>>()(
         }
       },
       setMainImage: (mainImage: MainImage | null) => set({ mainImage }),
-      setToolSelected: (toolSelected: string) => set({ toolSelected })
+      setToolSelected: (toolSelected: string) => set({ toolSelected }),
+      setImagetransformedData: (imageTransformedData: ImageTransformed | null) =>
+        set({ imageTransformedData })
     }),
     {
       client,
@@ -134,7 +139,8 @@ const useStore = create<WithLiveblocks<State>>()(
         selectedOverlay: true,
         isDragging: true,
         isTyping: true,
-        mainImage: true
+        mainImage: true,
+        imageTransformedData: true
       }
     }
   )

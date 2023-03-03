@@ -27,3 +27,9 @@ export type MainImage = {
   renderedWidth?: number
   renderedHeight?: number
 }
+
+export type ImageTransformed = {
+  url: string
+  width: number
+  height: number
+}
