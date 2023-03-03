@@ -2,23 +2,10 @@ import React, { useEffect, useRef, useState } from 'react'
 import { fabric } from 'fabric'
 import type { IText } from 'fabric/fabric-impl'
 import { nanoid } from 'nanoid'
-import { Cloudinary, Transformation } from '@cloudinary/url-gen'
-import { source } from '@cloudinary/url-gen/actions/overlay'
-import { text } from '@cloudinary/url-gen/qualifiers/source'
-import { TextStyle } from '@cloudinary/url-gen/qualifiers/textStyle'
-import { compass } from '@cloudinary/url-gen/qualifiers/gravity'
-import { Position } from '@cloudinary/url-gen/qualifiers/position'
-import { fill } from '@cloudinary/url-gen/actions/resize'
+import { useTransformation } from '@/hooks/useTransformation'
 import useStore from '@/state/store'
 import { ToolsOverlay } from './tools'
 
-const cld = new Cloudinary({
-  cloud: {
-    cloudName: ''
-  }
-})
-
-const myImage = cld.image('01_ntrcum')
 const valuesTextBox: fabric.ITextOptions = {
   isNew: true,
   fontSize: 22,
@@ -53,73 +40,75 @@ export const TextOverlay = React.memo(function TextOverlay() {
   const onOverlayTyping = useStore((state) => state.onOverlayTyping)
   const isTyping = useStore((state) => state.isTyping)
   const currentUser = useStore((state) => state.liveblocks.room?.getSelf())
+  const imageTransformedData = useStore((state) => state.imageTransformedData)
+  const { getUrlImageFromOverlay } = useTransformation()
+  // console.log(isFirstRender)
 
   useEffect(() => {
     if (!canvasEl.current) return
+    if (!imageTransformedData) return
 
+    const { url, width, height } = imageTransformedData
     const fabricCanvas = new fabric.Canvas(canvasEl.current)
-    fabric.Image.fromURL(
-      'https://res.cloudinary.com/product-demos/image/upload/c_fill,g_center,h_1580,w_1960/l_mew:Technology:overlays:01.png/c_limit,fl_relative,h_0.1,w_0.1/fl_layer_apply,g_north_west,x_0.05,y_0.05/f_jpg,q_auto/v1/mew/Technology/assets/01',
-      (fabricImg) => {
-        fabricImg.scaleToHeight(393)
-        fabricImg.scaleToWidth(480)
-        const canvasStyle = getComputedStyle(canvasEl.current!)
-        const canvasWidth = Number(canvasStyle.width.replace('px', ''))
-        const imageRatio = 1960 / 1580
-        const canvasHeight = canvasWidth / imageRatio
-        fabricCanvas.setHeight(canvasHeight)
-        fabricCanvas.setWidth(canvasWidth)
-        fabricCanvas.setBackgroundImage(fabricImg, (img: any) => {})
-        fabricCanvas.selection = false
-        // setIsFirstRender(true)
-        fabricCanvas
-          .on('mouse:up', (event) => {
-            if (event.target) {
-              // console.log('up')
-              onPointerOverlayUp()
-            }
-          })
-          .on('mouse:down', (event) => {
-            if (event.target) {
-              const id = event.target.id
-              onPointerOverlayDown(id)
-            }
-          })
-          .on('object:moving', (event) => {
-            const elemenTarget = event.target
-            const { id, top, left } = elemenTarget
-            if (elemenTarget) {
-              onOverlayDragging({
-                x: left,
-                y: top
-              })
-            }
-          })
-          .on('text:changed', (event) => {
-            const elmTarget = event.target
-            if (elmTarget) {
-              // console.log(elmTarget.text, elmTarget.getScaledWidth(), elmTarget.getScaledHeight())
-              onOverlayTyping({
-                text: elmTarget.text,
-                width: elmTarget.getScaledWidth(),
-                height: elmTarget.getScaledHeight()
-              })
-            }
-          })
-        setCanvasFabric(fabricCanvas)
-      }
-    )
+
+    fabric.Image.fromURL(url, (fabricImg) => {
+      fabricImg.scaleToHeight(393)
+      fabricImg.scaleToWidth(480)
+      const canvasStyle = getComputedStyle(canvasEl.current!)
+      const canvasWidth = Number(canvasStyle.width.replace('px', ''))
+      const imageRatio = width / height
+      const canvasHeight = canvasWidth / imageRatio
+      fabricCanvas.setHeight(canvasHeight)
+      fabricCanvas.setWidth(canvasWidth)
+      fabricCanvas.setBackgroundImage(fabricImg, (img: any) => {})
+      fabricCanvas.selection = false
+      setIsFirstRender(true)
+      fabricCanvas
+        .on('mouse:up', (event) => {
+          if (event.target) {
+            // console.log('up')
+            onPointerOverlayUp()
+          }
+        })
+        .on('mouse:down', (event) => {
+          if (event.target) {
+            const id = event.target.id
+            onPointerOverlayDown(id)
+          }
+        })
+        .on('object:moving', (event) => {
+          const elemenTarget = event.target
+          const { id, top, left } = elemenTarget
+          if (elemenTarget) {
+            onOverlayDragging({
+              x: left,
+              y: top
+            })
+          }
+        })
+        .on('text:changed', (event) => {
+          const elmTarget = event.target
+          if (elmTarget) {
+            // console.log(elmTarget.text, elmTarget.getScaledWidth(), elmTarget.getScaledHeight())
+            onOverlayTyping({
+              text: elmTarget.text,
+              width: elmTarget.getScaledWidth(),
+              height: elmTarget.getScaledHeight()
+            })
+          }
+        })
+      setCanvasFabric(fabricCanvas)
+    })
     return () => {
       fabricCanvas.dispose()
       setCanvasFabric(undefined)
     }
-  }, [])
+  }, [imageTransformedData])
 
   useEffect(() => {
     if (textBoxObjects.length === 0 || !canvasFabric) return
     if (isFirstRender) {
       console.log('usEffect general objects')
-      // console.log(textBoxObjects)
       textBoxObjects.forEach((obj: any) => {
         const textBox = new fabric.IText('Enter Text', obj)
         textBox.setControlsVisibility({ mt: false, mb: false, mtr: false }) // controls textbox
@@ -128,7 +117,7 @@ export const TextOverlay = React.memo(function TextOverlay() {
         setIsFirstRender(false)
       })
     }
-  }, [textBoxObjects])
+  }, [textBoxObjects, canvasFabric])
 
   useEffect(() => {
     if (!canvasFabric || textBoxObjects.length === 0) return
@@ -144,7 +133,7 @@ export const TextOverlay = React.memo(function TextOverlay() {
       canvasFabric.add(textBox)
       canvasFabric.renderAll()
     }
-  }, [textBoxObjects.length])
+  }, [textBoxObjects.length, canvasFabric])
 
   useEffect(() => {
     if (!canvasFabric) return
@@ -188,7 +177,7 @@ export const TextOverlay = React.memo(function TextOverlay() {
         }
       }
     }
-  }, [textBoxObjects])
+  }, [textBoxObjects, canvasFabric])
 
   const addText = () => {
     const idTextBox = nanoid(4)
@@ -206,36 +195,19 @@ export const TextOverlay = React.memo(function TextOverlay() {
     if (isFirstRender) setIsFirstRender(false)
   }
 
-  const handleTransformation = () => {
-    const scaleX = 1960 / 480 // Original width / rendered Width
-    const scaleY = 1580 / 393 // Original height / rendered Height
-    const imageUrl = myImage.resize(fill().width(1960).height(1580))
-    // Adding overlay dinamically on canvas
-    canvasFabric?.getObjects().forEach((objectOverlay) => {
-      const { text: textEntered, fontFamily, fontSize } = objectOverlay
-      const { x, y } = object.getCoords()[0] // TODO: Change this for top and left
-      const xCoordinate = Math.floor(x * scaleX)
-      const yCoordinate = Math.floor(y * scaleY)
-      imageUrl.overlay(
-        source(
-          text(textEntered, new TextStyle(fontFamily, 100).fontWeight('bold'))
-            .textColor('black')
-            .transformation(new Transformation())
-        ).position(
-          new Position().gravity(compass('north_west')).offsetX(xCoordinate).offsetY(yCoordinate)
-        )
-      )
-    })
-
-    console.log(imageUrl.toURL())
-  }
-
   return (
     <div className='flex flex-col'>
       <ToolsOverlay addText={addText} />
       <div className='w-[480px] max-h-[590px] mt-3 border-1'>
         <canvas width={480} height={393} ref={canvasEl} />
       </div>
+      <button
+        onClick={() => {
+          getUrlImageFromOverlay(canvasFabric!.getObjects())
+        }}
+      >
+        text T
+      </button>
     </div>
   )
 })
