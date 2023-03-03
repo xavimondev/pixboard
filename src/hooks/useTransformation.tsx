@@ -16,7 +16,7 @@ export function useTransformation() {
     let widthProcessed = 0
     let heightProcessed = 0
     let url = ''
-    const image = getImage('01_ntrcum')
+    const image = getImage(mainImage!.imageData.publicId)
     if (unit === '%') {
       widthProcessed = Math.ceil((width * widthCrop) / 100)
       heightProcessed = Math.ceil((height * heightCrop) / 100)
