@@ -1,3 +1,5 @@
+import type { ITextOptions } from 'fabric/fabric-impl'
+
 export type Coordinates = {
   x: number
   y: number
@@ -32,4 +34,9 @@ export type ImageTransformed = {
   url: string
   width: number
   height: number
+}
+
+export interface ITextOptionsOverlay extends ITextOptions {
+  isNew: boolean
+  text: string
 }

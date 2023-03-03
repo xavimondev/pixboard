@@ -5,8 +5,9 @@ import { nanoid } from 'nanoid'
 import { useTransformation } from '@/hooks/useTransformation'
 import useStore from '@/state/store'
 import { ToolsOverlay } from './tools'
+import { ITextOptionsOverlay } from '@/types/board'
 
-const valuesTextBox: fabric.ITextOptions = {
+const valuesTextBox: ITextOptionsOverlay = {
   isNew: true,
   fontSize: 22,
   fontFamily: 'Arial',
