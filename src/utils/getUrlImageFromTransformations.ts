@@ -1,6 +1,11 @@
-import { Cloudinary, CloudinaryImage } from '@cloudinary/url-gen'
+import { Cloudinary, CloudinaryImage, Transformation } from '@cloudinary/url-gen'
 import { scale, fill, crop } from '@cloudinary/url-gen/actions/resize'
 import { center } from '@cloudinary/url-gen/qualifiers/textAlignment'
+import { source } from '@cloudinary/url-gen/actions/overlay'
+import { text } from '@cloudinary/url-gen/qualifiers/source'
+import { TextStyle } from '@cloudinary/url-gen/qualifiers/textStyle'
+import { compass } from '@cloudinary/url-gen/qualifiers/gravity'
+import { Position } from '@cloudinary/url-gen/qualifiers/position'
 
 const cld = new Cloudinary({
   cloud: {
@@ -23,4 +28,25 @@ export const cropByCustomMeasures = (
     .resize(crop().width(width).height(height).x(xCrop).y(yCrop))
     .resize(scale().width(width).height(height))
     .toURL()
+}
+
+export const getFillImage = (image: CloudinaryImage, width: number, height: number) =>
+  image.resize(fill().width(width).height(height))
+
+export const overlayImage = (
+  image: CloudinaryImage,
+  textEntered: string,
+  fontFamily: string,
+  xCoordinate: number,
+  yCoordinate: number
+) => {
+  return image.overlay(
+    source(
+      text(textEntered, new TextStyle(fontFamily, 22).fontWeight('bold'))
+        .textColor('black')
+        .transformation(new Transformation())
+    ).position(
+      new Position().gravity(compass('north_west')).offsetX(xCoordinate).offsetY(yCoordinate)
+    )
+  )
 }
