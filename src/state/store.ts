@@ -3,7 +3,13 @@ import { createClient } from '@liveblocks/client'
 import { liveblocks } from '@liveblocks/zustand'
 import type { WithLiveblocks } from '@liveblocks/zustand'
 import type { Crop } from 'react-image-crop'
-import type { Coordinates, Dimensions, ImageTransformed, MainImage } from '@/types/board'
+import type {
+  Coordinates,
+  Dimensions,
+  FilterSelected,
+  ImageTransformed,
+  MainImage
+} from '@/types/board'
 import { DEFAULT_VALUE_CROP } from '@/utils/constants'
 
 type Cursor = { x: number; y: number }
@@ -32,6 +38,8 @@ type State = {
   setToolSelected: (toolSelected: string) => void
   imageTransformedData: ImageTransformed | null
   setImagetransformedData: (imageTransformedData: ImageTransformed | null) => void
+  filterSelected: FilterSelected
+  setFilterSelected: (filterSelected: FilterSelected) => void
 }
 
 const client = createClient({
@@ -77,6 +85,12 @@ const useStore = create<WithLiveblocks<State>>()(
       mainImage: null,
       toolSelected: 'crop',
       imageTransformedData: null,
+      filterSelected: {
+        filterName: 'original',
+        isSepia: false,
+        isGrayScale: false,
+        others: undefined
+      },
       setCursor: (cursor) => set({ cursor }),
       setCropValue: (cropValue: Crop) => set({ cropValue }),
       setPresetSelected: (presetSelected: string) => set({ presetSelected }),
@@ -125,7 +139,8 @@ const useStore = create<WithLiveblocks<State>>()(
       setMainImage: (mainImage: MainImage | null) => set({ mainImage }),
       setToolSelected: (toolSelected: string) => set({ toolSelected }),
       setImagetransformedData: (imageTransformedData: ImageTransformed | null) =>
-        set({ imageTransformedData })
+        set({ imageTransformedData }),
+      setFilterSelected: (filterSelected: FilterSelected) => set({ filterSelected })
     }),
     {
       client,
@@ -140,7 +155,8 @@ const useStore = create<WithLiveblocks<State>>()(
         isDragging: true,
         isTyping: true,
         mainImage: true,
-        imageTransformedData: true
+        imageTransformedData: true,
+        filterSelected: true
       }
     }
   )
