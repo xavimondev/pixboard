@@ -44,8 +44,11 @@ export const TextOverlay = React.memo(function TextOverlay() {
   const isTyping = useStore((state) => state.isTyping)
   const currentUser = useStore((state) => state.liveblocks.room?.getSelf())
   const imageTransformedData = useStore((state) => state.imageTransformedData)
+  const imageRenderedData = useRef({
+    renderedWidth: 0,
+    renderedHeight: 0
+  })
   const { getUrlImageFromOverlay } = useTransformation()
-  // console.log(isFirstRender)
 
   useEffect(() => {
     if (!canvasEl.current) return
@@ -67,10 +70,11 @@ export const TextOverlay = React.memo(function TextOverlay() {
         const maxImageHeight = containerHeight
         scaledDims = scaleToHeight(fabricImg, maxImageHeight)
       }
-      console.log({
-        width: scaledDims.width,
-        height: scaledDims.height
-      })
+
+      imageRenderedData.current = {
+        renderedWidth: scaledDims.width,
+        renderedHeight: scaledDims.height
+      }
       // Set the dimensions of the canvas to fit the scaled image
       fabricCanvas.setDimensions({
         width: scaledDims.width,
@@ -129,13 +133,16 @@ export const TextOverlay = React.memo(function TextOverlay() {
     if (textBoxObjects.length === 0 || !canvasFabric) return
     if (isFirstRender) {
       console.log('usEffect general objects')
-      textBoxObjects.forEach((obj: any) => {
-        const textBox = new fabric.IText('Enter Text', obj)
-        textBox.setControlsVisibility({ mt: false, mb: false, mtr: false }) // controls textbox
-        canvasFabric.add(textBox)
-        canvasFabric?.renderAll()
-        setIsFirstRender(false)
+      const { renderedHeight, renderedWidth } = imageRenderedData.current
+      textBoxObjects.forEach((obj: fabric.Object) => {
+        if (obj.left! <= renderedWidth && obj.top! <= renderedHeight) {
+          const textBox = new fabric.IText('Enter Text', obj)
+          textBox.setControlsVisibility({ mt: false, mb: false, mtr: false }) // controls textbox
+          canvasFabric.add(textBox)
+          canvasFabric?.renderAll()
+        }
       })
+      setIsFirstRender(false)
     }
   }, [textBoxObjects, canvasFabric])
 
@@ -223,7 +230,11 @@ export const TextOverlay = React.memo(function TextOverlay() {
       </div>
       <button
         onClick={() => {
-          getUrlImageFromOverlay(canvasFabric!.getObjects())
+          getUrlImageFromOverlay(
+            canvasFabric!.getObjects(),
+            imageRenderedData.current.renderedWidth,
+            imageRenderedData.current.renderedHeight
+          )
         }}
       >
         text T
