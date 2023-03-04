@@ -50,11 +50,10 @@ export const TextOverlay = React.memo(function TextOverlay() {
     if (!canvasEl.current) return
     if (!imageTransformedData) return
 
-    const { url } = imageTransformedData
+    const { url, width, height } = imageTransformedData
     const fabricCanvas = new fabric.Canvas(canvasEl.current)
 
     fabric.Image.fromURL(url, (fabricImg) => {
-      const { width, height } = imageTransformedData
       const { scaleWidth, scaleHight } = getImageScale(width, height)
       // Set the dimensions of the canvas to fit the scaled image
       fabricCanvas.setDimensions({
@@ -114,9 +113,10 @@ export const TextOverlay = React.memo(function TextOverlay() {
     if (textBoxObjects.length === 0 || !canvasFabric) return
     if (isFirstRender) {
       console.log('usEffect general objects')
-      const { renderedHeight, renderedWidth } = imageRenderedData.current
+      const { width, height } = imageTransformedData!
+      const { scaleWidth, scaleHight } = getImageScale(width, height)
       textBoxObjects.forEach((obj: fabric.Object) => {
-        if (obj.left! <= renderedWidth && obj.top! <= renderedHeight) {
+        if (obj.left! <= scaleWidth && obj.top! <= scaleHight) {
           const textBox = new fabric.IText('Enter Text', obj)
           textBox.setControlsVisibility({ mt: false, mb: false, mtr: false }) // controls textbox
           canvasFabric.add(textBox)
