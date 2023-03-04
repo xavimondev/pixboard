@@ -40,3 +40,10 @@ export interface ITextOptionsOverlay extends ITextOptions {
   isNew: boolean
   text: string
 }
+
+export type FilterSelected = {
+  filterName: string
+  isSepia: boolean
+  isGrayScale: boolean
+  others: any // TODO: Fix any
+}
