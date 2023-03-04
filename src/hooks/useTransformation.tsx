@@ -1,4 +1,3 @@
-import type { fabric } from 'fabric'
 import useStore from '@/state/store'
 import {
   cropByAspectRatio,
@@ -6,10 +5,13 @@ import {
   getImage,
   overlayImage
 } from '@/utils/getUrlImageFromTransformations'
+import { getImageScale } from '@/utils/getScale'
 
 export function useTransformation() {
   const cropValue = useStore((state) => state.cropValue)
   const mainImage = useStore((state) => state.mainImage)
+  const imageTransformedData = useStore((state) => state.imageTransformedData)
+  const textBoxObjects = useStore((state) => state.textBoxObjects)
 
   const getUrlImageFromCrop = () => {
     const { x, y, width: widthCrop, height: heightCrop, unit } = cropValue
@@ -41,19 +43,21 @@ export function useTransformation() {
     }
   }
 
-  const getUrlImageFromOverlay = (
-    listTextoverlay: fabric.Object[],
-    renderedWidth: number,
-    renderedHeight: number
-  ) => {
+  const getUrlImageFromOverlay = () => {
     const { image, width, height } = getUrlImageFromCrop()
+    const { width: widthFromImageTransformed, height: heightFromImageTransformed } =
+      imageTransformedData!
+    const { scaleWidth: renderedWidth, scaleHight: renderedHeight } = getImageScale(
+      widthFromImageTransformed,
+      heightFromImageTransformed
+    )
     const scaleX = width / renderedWidth // Original width / rendered Width
     const scaleY = height / renderedHeight // Original height / rendered Height
 
     // Adding overlay dinamically on canvas
-    listTextoverlay.forEach((objectOverlay) => {
+    textBoxObjects.forEach((textOverlay: any) => {
       // console.log(objectOverlay)
-      const { text, fontFamily, top, left } = objectOverlay
+      const { text, fontFamily, top, left } = textOverlay
       const xCoordinate = Math.floor(left! * scaleX)
       const yCoordinate = Math.floor(top! * scaleY)
       overlayImage(image, text, fontFamily, xCoordinate, yCoordinate)

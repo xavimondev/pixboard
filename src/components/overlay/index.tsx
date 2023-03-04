@@ -5,7 +5,7 @@ import { nanoid } from 'nanoid'
 import { useTransformation } from '@/hooks/useTransformation'
 import useStore from '@/state/store'
 import { ITextOptionsOverlay } from '@/types/board'
-import { scaleToHeight, scaleToWidth } from '@/utils/getScale'
+import { getImageScale } from '@/utils/getScale'
 import { ToolsOverlay } from './tools'
 
 const valuesTextBox: ITextOptionsOverlay = {
@@ -44,10 +44,6 @@ export const TextOverlay = React.memo(function TextOverlay() {
   const isTyping = useStore((state) => state.isTyping)
   const currentUser = useStore((state) => state.liveblocks.room?.getSelf())
   const imageTransformedData = useStore((state) => state.imageTransformedData)
-  const imageRenderedData = useRef({
-    renderedWidth: 0,
-    renderedHeight: 0
-  })
   const { getUrlImageFromOverlay } = useTransformation()
 
   useEffect(() => {
@@ -58,31 +54,16 @@ export const TextOverlay = React.memo(function TextOverlay() {
     const fabricCanvas = new fabric.Canvas(canvasEl.current)
 
     fabric.Image.fromURL(url, (fabricImg) => {
-      // Calculate the scaled dimensions of the image
-      const containerWidth = 800
-      const containerHeight = 600
-      const maxImageWidth = containerWidth
-      let scaledDims = scaleToWidth(fabricImg, maxImageWidth)
-
-      // If the height of the scaled image exceeds the container height,
-      // scale the image again based on the container height
-      if (scaledDims.height > containerHeight) {
-        const maxImageHeight = containerHeight
-        scaledDims = scaleToHeight(fabricImg, maxImageHeight)
-      }
-
-      imageRenderedData.current = {
-        renderedWidth: scaledDims.width,
-        renderedHeight: scaledDims.height
-      }
+      const { width, height } = imageTransformedData
+      const { scaleWidth, scaleHight } = getImageScale(width, height)
       // Set the dimensions of the canvas to fit the scaled image
       fabricCanvas.setDimensions({
-        width: scaledDims.width,
-        height: scaledDims.height
+        width: scaleWidth,
+        height: scaleHight
       })
 
       // Add the image to the canvas and center it
-      fabricImg.scaleToWidth(scaledDims.width)
+      fabricImg.scaleToWidth(scaleWidth)
       fabricCanvas.setBackgroundImage(fabricImg, (img: any) => {})
       fabricCanvas.selection = false
       fabricCanvas.centerObject(fabricImg)
@@ -230,11 +211,7 @@ export const TextOverlay = React.memo(function TextOverlay() {
       </div>
       <button
         onClick={() => {
-          getUrlImageFromOverlay(
-            canvasFabric!.getObjects(),
-            imageRenderedData.current.renderedWidth,
-            imageRenderedData.current.renderedHeight
-          )
+          getUrlImageFromOverlay()
         }}
       >
         text T
