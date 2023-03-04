@@ -41,13 +41,18 @@ export function useTransformation() {
     }
   }
 
-  const getUrlImageFromOverlay = (listTextoverlay: fabric.Object[]) => {
+  const getUrlImageFromOverlay = (
+    listTextoverlay: fabric.Object[],
+    renderedWidth: number,
+    renderedHeight: number
+  ) => {
     const { image, width, height } = getUrlImageFromCrop()
-    const scaleX = width / 480 // Original width / rendered Width
-    const scaleY = height / 393 // Original height / rendered Height
+    const scaleX = width / renderedWidth // Original width / rendered Width
+    const scaleY = height / renderedHeight // Original height / rendered Height
 
     // Adding overlay dinamically on canvas
     listTextoverlay.forEach((objectOverlay) => {
+      // console.log(objectOverlay)
       const { text, fontFamily, top, left } = objectOverlay
       const xCoordinate = Math.floor(left! * scaleX)
       const yCoordinate = Math.floor(top! * scaleY)
