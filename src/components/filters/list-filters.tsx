@@ -1,0 +1,73 @@
+import React from 'react'
+import { CldImage } from 'next-cloudinary'
+import useStore from '@/state/store'
+import { useFilter } from './hooks/useFilter'
+
+const FILTERS = [
+  'original',
+  'sepia',
+  'athena',
+  'grayscale',
+  'aurora',
+  'eucalyptus',
+  'hairspray',
+  'incognito',
+  'quartz',
+  'sizzle',
+  'red_rock'
+]
+
+const generateFilter = (effect: string) => {
+  if (effect === 'sepia' || effect === 'grayscale' || effect === 'original') return
+  return [
+    {
+      art: effect
+    }
+  ]
+}
+
+type FilterOptionProps = {
+  filter: string
+}
+
+const FilterOption = React.memo(function FilterOption({ filter }: FilterOptionProps) {
+  const { filterName } = useStore((state) => state.filterSelected)
+  const { handleFilters } = useFilter()
+  const othersFilters = generateFilter(filter)
+
+  const bgColor =
+    filter === filterName
+      ? 'bg-sky-700/[0.5] text-sky-500 font-semibold'
+      : 'bg-neutral-800 hover:bg-neutral-700 text-gray-200'
+  return (
+    <button
+      onClick={() => handleFilters(filter)}
+      className={`${bgColor} px-3 py-4 justify-between flex flex-col items-center rounded-lg`}
+    >
+      <CldImage
+        width={100}
+        height={100}
+        alt={`Effect ${filter}`}
+        sepia={filter === 'sepia'}
+        grayscale={filter === 'grayscale'}
+        effects={othersFilters}
+        src='https://res.cloudinary.com/xavimon/image/upload/c_crop,h_1282,w_1295,x_528,y_-148/c_scale,h_1282,w_1295/v1/pixboard/presets/code_syhhln'
+      />
+      <span className='text-sm first-letter:capitalize mt-9'>{filter}</span>
+    </button>
+  )
+})
+
+export function ListFilters() {
+  return (
+    <>
+      <div className='flex flex-row justify-between w-full'>
+        <div className='grid grid-cols-4 gap-4'>
+          {FILTERS.map((filter: string) => (
+            <FilterOption key={filter} filter={filter} />
+          ))}
+        </div>
+      </div>
+    </>
+  )
+}
