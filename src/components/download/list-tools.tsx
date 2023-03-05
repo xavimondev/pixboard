@@ -4,11 +4,12 @@ export function BlurTweak() {
       <label htmlFor='blur' className='block mb-3 font-medium text-white'>
         Blur level
       </label>
+      <span className='text-sm text-gray-400 w-full mb-2'>(Min: 0 and Max: 2000)</span>
       <input
         id='blur'
         type='range'
         min={0}
-        max={200}
+        max={2000}
         className='w-full h-2 rounded-lg appearance-none cursor-pointer bg-neutral-700'
       />
     </div>
