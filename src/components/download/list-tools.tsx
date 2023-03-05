@@ -1,5 +1,6 @@
 import React from 'react'
 import useStore from '@/state/store'
+import { useTransformation } from '@/hooks/useTransformation'
 import { copyTextToClipboard } from '@/utils/copyToClipboard'
 
 export function BlurTweak() {
@@ -17,6 +18,7 @@ export function BlurTweak() {
         type='range'
         min={0}
         max={2000}
+        step={100}
         defaultValue={blurLevel}
         onChange={(evt: React.ChangeEvent<HTMLInputElement>) =>
           setBlurLevel(Number(evt.currentTarget.value))
@@ -99,12 +101,31 @@ export function QualityTweak() {
 
 export function ListTools() {
   const imageTransformedData = useStore((state) => state.imageTransformedData)
+  const setImagetransformedData = useStore((state) => state.setImagetransformedData)
+  const { getGeneralTransformation } = useTransformation()
 
   return (
     <div className='flex flex-col gap-10 h-full w-full'>
       <BlurTweak />
       <OpacityTweak />
       <QualityTweak />
+      <div className='flex flex-col gap-1 items-start'>
+        <span className='block mb-3 font-medium text-white'>Generate</span>
+        <button
+          onClick={() => {
+            const { url, urlDownloadable } = getGeneralTransformation()
+            setImagetransformedData({
+              ...imageTransformedData!,
+              url
+            })
+            console.log(url)
+            console.log(urlDownloadable)
+          }}
+          className='text-sky-500 font-semibold text-base bg-sky-700/[0.5] p-1.5 rounded-md flex items-center'
+        >
+          Generate New Image
+        </button>
+      </div>
       <div className='flex flex-col gap-1'>
         <span className='block mb-3 font-medium text-white'>Download</span>
         <div className='flex flex-row items-center gap-4'>
