@@ -1,9 +1,9 @@
 import { useTransformation } from '@/hooks/useTransformation'
 import useStore from '@/state/store'
-import { BlurIc, CropIc, EffectsIc, TextIc } from './icons'
+import { CropIc, DownloadIc, EffectsIc, TextIc } from './icons'
 import { PlaceHolder } from './placeholder'
 
-type Tool = 'crop' | 'overlay' | 'blur' | 'effects'
+type Tool = 'crop' | 'overlay' | 'download' | 'effects'
 
 type ToolbarItemProps = {
   id: Tool
@@ -54,11 +54,11 @@ export function Toolbar() {
             <ToolbarItem id='overlay'>
               {(colorText: string) => <TextIc className={`h-5 w-5 ${colorText}`} />}
             </ToolbarItem>
-            <ToolbarItem id='blur'>
-              {(colorText: string) => <BlurIc className={`h-5 w-5 ${colorText}`} />}
-            </ToolbarItem>
             <ToolbarItem id='effects'>
               {(colorText: string) => <EffectsIc className={`h-5 w-5 ${colorText}`} />}
+            </ToolbarItem>
+            <ToolbarItem id='download'>
+              {(colorText: string) => <DownloadIc className={`h-5 w-5 ${colorText}`} />}
             </ToolbarItem>
           </>
         )}
