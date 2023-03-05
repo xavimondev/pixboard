@@ -209,13 +209,6 @@ export const TextOverlay = React.memo(function TextOverlay() {
       <div className='border-1 min-h-[400px] min-w-[600px] max-h-[600px] max-w-[800px] flex justify-center items-center bg-default-image'>
         <canvas ref={canvasEl} />
       </div>
-      <button
-        onClick={() => {
-          getUrlImageFromOverlay()
-        }}
-      >
-        text T
-      </button>
     </div>
   )
 })
