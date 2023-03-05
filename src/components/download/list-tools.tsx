@@ -105,12 +105,11 @@ export function ListTools() {
   const { getGeneralTransformation } = useTransformation()
 
   return (
-    <div className='flex flex-col gap-10 h-full w-full'>
+    <div className='flex flex-col gap-8 h-full w-full'>
       <BlurTweak />
       <OpacityTweak />
       <QualityTweak />
       <div className='flex flex-col gap-1 items-start'>
-        <span className='block mb-3 font-medium text-white'>Generate</span>
         <button
           onClick={() => {
             const { url, urlDownloadable } = getGeneralTransformation()
@@ -122,7 +121,7 @@ export function ListTools() {
           }}
           className='text-sky-500 font-semibold text-base bg-sky-700/[0.5] p-1.5 rounded-md flex items-center'
         >
-          Generate New Image
+          Apply changes
         </button>
       </div>
       <div className='flex flex-col gap-1'>
