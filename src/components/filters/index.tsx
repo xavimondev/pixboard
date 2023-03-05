@@ -5,7 +5,6 @@ import { ListFilters } from './list-filters'
 export function Filters() {
   const imageTransformedData = useStore((state) => state.imageTransformedData)
   const { url, width, height } = imageTransformedData!
-  console.log(imageTransformedData)
   return (
     <>
       <div className='flex flex-row justify-between w-full space-x-4'>
