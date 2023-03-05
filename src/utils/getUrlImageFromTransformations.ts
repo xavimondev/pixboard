@@ -16,7 +16,7 @@ const cld = new Cloudinary({
 
 export const getImage = (publicId: string) => cld.image(publicId)
 export const cropByAspectRatio = (image: CloudinaryImage, width: number, height: number) => {
-  return image.resize(fill().gravity(center()).width(width).height(height)).toURL()
+  return image.resize(fill().gravity(center()).width(width).height(height))
 }
 export const cropByCustomMeasures = (
   image: CloudinaryImage,
@@ -28,7 +28,6 @@ export const cropByCustomMeasures = (
   return image
     .resize(crop().width(width).height(height).x(xCrop).y(yCrop))
     .resize(scale().width(width).height(height))
-    .toURL()
 }
 
 export const getFillImage = (image: CloudinaryImage, width: number, height: number) =>
