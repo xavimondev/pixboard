@@ -13,20 +13,28 @@ export function useTransformation() {
   const mainImage = useStore((state) => state.mainImage)
   const imageTransformedData = useStore((state) => state.imageTransformedData)
   const textBoxObjects = useStore((state) => state.textBoxObjects)
-  // const filterName = useStore((state) => state.filterSelected.filterName)
+  const filterName = useStore((state) => state.filterSelected.filterName)
 
   const getUrlImageFromCrop = () => {
     const { x, y, width: widthCrop, height: heightCrop, unit } = cropValue
     const { imageData, renderedWidth, renderedHeight } = mainImage!
     const { height, width } = imageData
+    const image = getImage(mainImage!.imageData.publicId)
+    if (x === 0 && y === 0) {
+      return {
+        image,
+        width,
+        height
+      }
+    }
+
     let widthProcessed = 0
     let heightProcessed = 0
-    let url = ''
-    const image = getImage(mainImage!.imageData.publicId)
+
     if (unit === '%') {
       widthProcessed = Math.ceil((width * widthCrop) / 100)
       heightProcessed = Math.ceil((height * heightCrop) / 100)
-      url = cropByAspectRatio(image, widthProcessed, heightProcessed)
+      cropByAspectRatio(image, widthProcessed, heightProcessed)
     } else {
       const scaleX = width / renderedWidth!
       const scaleY = height / renderedHeight!
@@ -34,12 +42,10 @@ export function useTransformation() {
       heightProcessed = Math.floor(scaleY * heightCrop)
       const xCrop = Math.floor(x * scaleX)
       const yCrop = Math.floor(y * scaleY)
-      url = cropByCustomMeasures(image, widthProcessed, heightProcessed, xCrop, yCrop)
+      cropByCustomMeasures(image, widthProcessed, heightProcessed, xCrop, yCrop)
     }
-    console.log(url)
     return {
       image,
-      url,
       width: widthProcessed,
       height: heightProcessed
     }
@@ -47,6 +53,14 @@ export function useTransformation() {
 
   const getUrlImageFromOverlay = () => {
     const { image, width, height } = getUrlImageFromCrop()
+    if (textBoxObjects.length === 0) {
+      return {
+        image,
+        width,
+        height
+      }
+    }
+
     const { width: widthFromImageTransformed, height: heightFromImageTransformed } =
       imageTransformedData!
     const { scaleWidth: renderedWidth, scaleHight: renderedHeight } = getImageScale(
@@ -66,15 +80,28 @@ export function useTransformation() {
     })
     console.log(`Overlay: ${image.toURL()}`)
     return {
-      image
+      image,
+      width,
+      height
     }
   }
 
   const getUrlImageFromFilters = (filter: string) => {
-    const { image } = getUrlImageFromOverlay()
-    const imageResult = applyFilters(image, filter)
-    console.log(imageResult.toURL())
-    return imageResult.toURL()
+    const { image, height, width } = getUrlImageFromOverlay()
+    if (filterName === 'original') {
+      return {
+        url: image.toURL(),
+        height,
+        width
+      }
+    }
+    const imageResult = applyFilters(image, filterName)
+    console.log(`Filters: ${imageResult.toURL()}`)
+    return {
+      url: imageResult.toURL(),
+      height,
+      width
+    }
   }
 
   return {
