@@ -54,7 +54,7 @@ const FilterOption = React.memo(function FilterOption({ filter }: FilterOptionPr
       url
     })
   }
-
+  // TODO: Change ts ignore
   return (
     <button
       onClick={applyFilter}
@@ -64,6 +64,7 @@ const FilterOption = React.memo(function FilterOption({ filter }: FilterOptionPr
         width={100}
         height={100}
         alt={`Effect ${filter}`}
+        // @ts-ignore
         sepia={filter === 'sepia'}
         grayscale={filter === 'grayscale'}
         effects={othersFilters}
