@@ -15,7 +15,7 @@ export function ListAvatars() {
   return (
     <>
       {users.slice(0, MAX_USERS).map(({ id, info }) => {
-        const { avatar, color, name } = info
+        const { avatar, color, name } = info as any
         return <Avatar key={id} name={name} color={color} avatar={avatar} />
       })}
       {users.length > MAX_USERS ? <AvatarEllipsis size={users.length - MAX_USERS} /> : null}
