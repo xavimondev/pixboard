@@ -6,6 +6,7 @@ import { text } from '@cloudinary/url-gen/qualifiers/source'
 import { TextStyle } from '@cloudinary/url-gen/qualifiers/textStyle'
 import { compass } from '@cloudinary/url-gen/qualifiers/gravity'
 import { Position } from '@cloudinary/url-gen/qualifiers/position'
+import { artisticFilter, grayscale, sepia } from '@cloudinary/url-gen/actions/effect'
 
 const cld = new Cloudinary({
   cloud: {
@@ -49,4 +50,10 @@ export const overlayImage = (
       new Position().gravity(compass('north_west')).offsetX(xCoordinate).offsetY(yCoordinate)
     )
   )
+}
+export const applyFilters = (image: CloudinaryImage, filter: string) => {
+  if (filter === 'original') return image
+  else if (filter === 'grayscale') return image.effect(grayscale())
+  else if (filter === 'sepia') return image.effect(sepia())
+  else return image.effect(artisticFilter(filter))
 }
