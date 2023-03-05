@@ -60,7 +60,7 @@ export function useTransformation() {
 
   const getUrlImageFromOverlay = () => {
     const { image, width, height } = getUrlImageFromCrop()
-    if (textBoxObjects.length === 0) {
+    if (textBoxObjects.length === 0 || !imageTransformedData) {
       return {
         image,
         width,
