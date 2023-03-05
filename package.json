@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "canvas-oversize": "npx rimraf ./node_modules/canvas",
+    "postbuild": "npm run canvas-oversize",
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint -- --fix",
