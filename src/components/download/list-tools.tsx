@@ -1,8 +1,14 @@
+import React from 'react'
+import useStore from '@/state/store'
+
 export function BlurTweak() {
+  const setBlurLevel = useStore((state) => state.setBlurLevel)
+  const blurLevel = useStore((state) => state.blurLevel)
+
   return (
     <div className='flex flex-col w-full'>
       <label htmlFor='blur' className='block mb-3 font-medium text-white'>
-        Blur level
+        Blur level: {blurLevel}
       </label>
       <span className='text-sm text-gray-400 w-full mb-2'>(Min: 0 and Max: 2000)</span>
       <input
@@ -10,17 +16,24 @@ export function BlurTweak() {
         type='range'
         min={0}
         max={2000}
-        defaultValue={0}
+        defaultValue={blurLevel}
+        onChange={(evt: React.ChangeEvent<HTMLInputElement>) =>
+          setBlurLevel(Number(evt.currentTarget.value))
+        }
         className='w-full h-2 rounded-lg appearance-none cursor-pointer bg-neutral-700'
       />
     </div>
   )
 }
+
 export function OpacityTweak() {
+  const setOpacityLevel = useStore((state) => state.setOpacityLevel)
+  const opacityLevel = useStore((state) => state.opacityLevel)
+
   return (
     <div className='flex flex-col w-full'>
       <label htmlFor='opacity' className='block mb-2 font-medium text-white'>
-        Opacity level
+        Opacity level: {opacityLevel}
       </label>
       <span className='text-sm text-gray-400 w-full mb-2'>
         (100 means completely opaque and 0 is completely transparent)
@@ -30,66 +43,59 @@ export function OpacityTweak() {
         type='range'
         min={0}
         max={100}
-        defaultValue={0}
+        defaultValue={opacityLevel}
+        onChange={(evt: React.ChangeEvent<HTMLInputElement>) =>
+          setOpacityLevel(Number(evt.currentTarget.value))
+        }
         className='w-full h-2 rounded-lg appearance-none cursor-pointer bg-neutral-700'
       />
     </div>
   )
 }
+
+const QUALITY_OPTIONS = ['auto', 'best', 'good', 'low']
+
+function QualityOption({ option }: { option: string }) {
+  const setQualitySelected = useStore((state) => state.setQualitySelected)
+  const qualitySelected = useStore((state) => state.qualitySelected)
+
+  return (
+    <>
+      <div className='flex items-center mb-4'>
+        <input
+          id={`radio-${option}`}
+          type='radio'
+          checked={option === qualitySelected}
+          value={option}
+          onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
+            setQualitySelected(evt.target.value)
+          }}
+          className='w-4 h-4 text-neutral-600 bg-gray-700 border-gray-600'
+        />
+        <label
+          htmlFor={`radio-${option}`}
+          className='ml-2 text-sm font-medium text-gray-300 first-letter:capitalize'
+        >
+          {option}
+        </label>
+      </div>
+    </>
+  )
+}
+
 export function QualityTweak() {
   return (
     <div className='flex flex-col w-full'>
       <label htmlFor='blur' className='block mb-3 font-medium text-white'>
         Quality
       </label>
-      <div className='flex items-center mb-4'>
-        <input
-          id='radioAuto'
-          type='radio'
-          checked
-          name='quality'
-          className='w-4 h-4 text-neutral-600 bg-gray-700 border-gray-600'
-        />
-        <label htmlFor='radioAuto' className='ml-2 text-sm font-medium text-gray-300'>
-          Auto
-        </label>
-      </div>
-      <div className='flex items-center mb-4'>
-        <input
-          id='radioBest'
-          type='radio'
-          name='quality'
-          className='w-4 h-4 text-neutral-600 bg-gray-700 border-gray-600'
-        />
-        <label htmlFor='radioBest' className='ml-2 text-sm font-medium text-gray-300'>
-          Best
-        </label>
-      </div>
-      <div className='flex items-center mb-4'>
-        <input
-          id='radioGood'
-          type='radio'
-          name='quality'
-          className='w-4 h-4 text-neutral-600 bg-gray-700 border-gray-600'
-        />
-        <label htmlFor='radioGood' className='ml-2 text-sm font-medium text-gray-300'>
-          Good
-        </label>
-      </div>
-      <div className='flex items-center mb-4'>
-        <input
-          id='radioLow'
-          type='radio'
-          name='quality'
-          className='w-4 h-4 text-neutral-600 bg-gray-700 border-gray-600'
-        />
-        <label htmlFor='radioLow' className='ml-2 text-sm font-medium text-gray-300'>
-          Low
-        </label>
-      </div>
+      {QUALITY_OPTIONS.map((option) => (
+        <QualityOption key={option} option={option} />
+      ))}
     </div>
   )
 }
+
 export function ListTools() {
   return (
     <div className='flex flex-col gap-10 h-full w-full'>

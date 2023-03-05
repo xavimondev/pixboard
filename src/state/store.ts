@@ -40,6 +40,12 @@ type State = {
   setImagetransformedData: (imageTransformedData: ImageTransformed | null) => void
   filterSelected: FilterSelected
   setFilterSelected: (filterSelected: FilterSelected) => void
+  blurLevel: number
+  setBlurLevel: (blurLevel: number) => void
+  opacityLevel: number
+  setOpacityLevel: (opacityLevel: number) => void
+  qualitySelected: string
+  setQualitySelected: (qualitySelected: string) => void
 }
 
 const client = createClient({
@@ -91,6 +97,9 @@ const useStore = create<WithLiveblocks<State>>()(
         isGrayScale: false,
         others: undefined
       },
+      blurLevel: 0,
+      opacityLevel: 0,
+      qualitySelected: 'auto',
       setCursor: (cursor) => set({ cursor }),
       setCropValue: (cropValue: Crop) => set({ cropValue }),
       setPresetSelected: (presetSelected: string) => set({ presetSelected }),
@@ -140,7 +149,10 @@ const useStore = create<WithLiveblocks<State>>()(
       setToolSelected: (toolSelected: string) => set({ toolSelected }),
       setImagetransformedData: (imageTransformedData: ImageTransformed | null) =>
         set({ imageTransformedData }),
-      setFilterSelected: (filterSelected: FilterSelected) => set({ filterSelected })
+      setFilterSelected: (filterSelected: FilterSelected) => set({ filterSelected }),
+      setBlurLevel: (blurLevel: number) => set({ blurLevel }),
+      setOpacityLevel: (opacityLevel: number) => set({ opacityLevel }),
+      setQualitySelected: (qualitySelected: string) => set({ qualitySelected })
     }),
     {
       client,
@@ -156,7 +168,10 @@ const useStore = create<WithLiveblocks<State>>()(
         isTyping: true,
         mainImage: true,
         imageTransformedData: true,
-        filterSelected: true
+        filterSelected: true,
+        blurLevel: true,
+        opacityLevel: true,
+        qualitySelected: true
       }
     }
   )
