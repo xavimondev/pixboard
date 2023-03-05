@@ -37,8 +37,10 @@ export type ImageTransformed = {
 }
 
 export interface ITextOptionsOverlay extends ITextOptions {
+  id?: string
   isNew: boolean
   text: string
+  owner?: string
 }
 
 export type FilterSelected = {

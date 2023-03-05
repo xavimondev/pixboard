@@ -68,19 +68,19 @@ export const TextOverlay = React.memo(function TextOverlay() {
       fabricCanvas.centerObject(fabricImg)
       setIsFirstRender(true)
       fabricCanvas
-        .on('mouse:up', (event) => {
+        .on('mouse:up', (event: any) => {
           if (event.target) {
             // console.log('up')
             onPointerOverlayUp()
           }
         })
-        .on('mouse:down', (event) => {
+        .on('mouse:down', (event: any) => {
           if (event.target) {
             const id = event.target.id
             onPointerOverlayDown(id)
           }
         })
-        .on('object:moving', (event) => {
+        .on('object:moving', (event: any) => {
           const elemenTarget = event.target
           const { top, left } = elemenTarget
           if (elemenTarget) {
@@ -90,7 +90,7 @@ export const TextOverlay = React.memo(function TextOverlay() {
             })
           }
         })
-        .on('text:changed', (event) => {
+        .on('text:changed', (event: any) => {
           const elmTarget = event.target
           if (elmTarget) {
             // console.log(elmTarget.text, elmTarget.getScaledWidth(), elmTarget.getScaledHeight())
@@ -150,7 +150,7 @@ export const TextOverlay = React.memo(function TextOverlay() {
     if (isDragging) {
       const overlayObject = canvasFabric
         .getObjects()
-        .find((obj) => obj.id === selectedOverlay) as IText
+        .find((obj: any) => obj.id === selectedOverlay) as IText
       if (overlayObject) {
         const overlaySelectedData = textBoxObjects.find(
           (txtObject: any) => txtObject.id === selectedOverlay
@@ -170,7 +170,7 @@ export const TextOverlay = React.memo(function TextOverlay() {
     if (isTyping) {
       const overlayObject = canvasFabric
         .getObjects()
-        .find((obj) => obj.id === selectedOverlay) as IText
+        .find((obj: any) => obj.id === selectedOverlay) as IText
       if (overlayObject) {
         const overlaySelectedData = textBoxObjects.find(
           (txtObject: any) => txtObject.id === selectedOverlay
@@ -190,7 +190,7 @@ export const TextOverlay = React.memo(function TextOverlay() {
   const addText = () => {
     const idTextBox = nanoid(4)
     valuesTextBox.id = idTextBox
-    valuesTextBox.owner = currentUser.id
+    valuesTextBox.owner = currentUser!.id
     const textBox = new fabric.IText('Enter Text', valuesTextBox)
     // hide rotation control
     textBox.setControlsVisibility({ mt: false, mb: false, mtr: false }) // controls textbox
