@@ -3,6 +3,7 @@ import { ListCursors } from '@/components/list-cursors'
 import { Cropper } from '@/components/cropper'
 import { TextOverlay } from '@/components/overlay'
 import { Filters } from '@/components/filters'
+import { Download } from '@/components/download'
 
 const toolsComponents = [
   {
@@ -16,6 +17,10 @@ const toolsComponents = [
   {
     id: 'effects',
     Component: <Filters />
+  },
+  {
+    id: 'download',
+    Component: <Download />
   }
 ]
 
