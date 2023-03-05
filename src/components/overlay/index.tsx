@@ -44,7 +44,6 @@ export const TextOverlay = React.memo(function TextOverlay() {
   const isTyping = useStore((state) => state.isTyping)
   const currentUser = useStore((state) => state.liveblocks.room?.getSelf())
   const imageTransformedData = useStore((state) => state.imageTransformedData)
-  const { getUrlImageFromOverlay } = useTransformation()
 
   useEffect(() => {
     if (!canvasEl.current) return
