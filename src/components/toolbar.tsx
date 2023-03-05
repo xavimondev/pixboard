@@ -13,7 +13,7 @@ type ToolbarItemProps = {
 function ToolbarItem({ id, children }: ToolbarItemProps) {
   const toolSelected = useStore((state) => state.toolSelected)
   const setToolSelected = useStore((state) => state.setToolSelected)
-  const { getUrlImageFromCrop } = useTransformation()
+  const { getUrlImageFromFilters } = useTransformation()
   const bgColor =
     toolSelected === id ? 'bg-sky-700/[0.5] text-sky-500 rounded-md' : 'hover:bg-neutral-600'
   const textColor = toolSelected === id ? 'text-sky-500' : 'text-white'
@@ -25,14 +25,12 @@ function ToolbarItem({ id, children }: ToolbarItemProps) {
         className={`hover:rounded-md p-1.5 ${bgColor}`}
         onClick={() => {
           setToolSelected(id)
-          if (id === 'overlay') {
-            const { url, width, height } = getUrlImageFromCrop()
-            setImagetransformedData({
-              url,
-              width,
-              height
-            })
-          }
+          const { url, width, height } = getUrlImageFromFilters('original')
+          setImagetransformedData({
+            url,
+            width,
+            height
+          })
         }}
       >
         {children(textColor)}
