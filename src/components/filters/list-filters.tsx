@@ -48,7 +48,7 @@ const FilterOption = React.memo(function FilterOption({ filter }: FilterOptionPr
 
   const applyFilter = () => {
     handleFilters(filter)
-    const url = getUrlImageFromFilters(filter)
+    const { url } = getUrlImageFromFilters(filter)
     setImagetransformedData({
       ...imageTransformedData!,
       url
