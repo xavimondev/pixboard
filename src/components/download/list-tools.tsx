@@ -116,10 +116,9 @@ export function ListTools() {
             const { url, urlDownloadable } = getGeneralTransformation()
             setImagetransformedData({
               ...imageTransformedData!,
-              url
+              url,
+              urlDownloadable
             })
-            console.log(url)
-            console.log(urlDownloadable)
           }}
           className='text-sky-500 font-semibold text-base bg-sky-700/[0.5] p-1.5 rounded-md flex items-center'
         >
@@ -139,7 +138,7 @@ export function ListTools() {
           </div>
           <div className='flex flex-row justify-between'>
             <a
-              href='https://res.cloudinary.com/product-demos/image/upload/c_fill,g_center,h_1580,w_1960/l_mew:Fashion:overlays:01.png/c_limit,fl_relative,h_0.1,w_0.1/fl_layer_apply,g_north_west,x_0.05,y_0.05/f_jpg,q_auto:low/v1/mew/Fashion/assets/01'
+              href={imageTransformedData?.urlDownloadable}
               className='text-sky-500 font-semibold text-base bg-sky-700/[0.5] p-1.5 rounded-md flex items-center'
             >
               Download
