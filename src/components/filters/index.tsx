@@ -13,7 +13,6 @@ export function Filters() {
         <div className='min-h-[400px] min-w-[600px] max-h-[600px] max-w-[800px] flex justify-center items-center bg-default-image'>
           <Image
             alt='Imagen choosen by user'
-            src
             src={url}
             width={width}
             height={height}
