@@ -13,10 +13,14 @@ export function ListCursors() {
         // TODO: add types
         return (
           <Cursor
+            // @ts-ignore
             color={info?.color}
             key={connectionId}
+            // @ts-ignore
             name={info?.name}
+            // @ts-ignore
             x={presence.cursor.x}
+            // @ts-ignore
             y={presence.cursor.y}
           />
         )
