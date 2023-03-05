@@ -226,7 +226,7 @@ export function LoadingIc(props: SVGProps<SVGSVGElement>) {
     >
       <circle
         fill='none'
-        stroke='#fff'
+        stroke='currentColor'
         strokeWidth='4'
         strokeMiterlimit='10'
         cx='50'
@@ -236,7 +236,7 @@ export function LoadingIc(props: SVGProps<SVGSVGElement>) {
       <line
         fill='none'
         strokeLinecap='round'
-        stroke='#fff'
+        stroke='currentColor'
         strokeWidth='4'
         strokeMiterlimit='10'
         x1='50'
@@ -256,7 +256,7 @@ export function LoadingIc(props: SVGProps<SVGSVGElement>) {
       <line
         fill='none'
         strokeLinecap='round'
-        stroke='#fff'
+        stroke='currentColor'
         strokeWidth='4'
         strokeMiterlimit='10'
         x1='50'
@@ -314,6 +314,69 @@ export function ShareIc(props: SVGProps<SVGSVGElement>) {
     >
       <path
         d='M20 13v6a2 2 0 01-2 2H6a2 2 0 01-2-2v-6M12 15V3m0 0L8.5 6.5M12 3l3.5 3.5'
+        stroke='currentColor'
+        strokeWidth='1.5'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+    </svg>
+  )
+}
+
+export function UndoAllIc(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      stroke-width='1.5'
+      viewBox='0 0 24 24'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      color='#000000'
+      {...props}
+    >
+      <path
+        d='M7 10.625h7.2s0 0 0 0 2.8 0 2.8 3C17 17 14.2 17 14.2 17h-.8'
+        stroke='currentColor'
+        strokeWidth='1.5'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+      <path
+        d='M10.5 14L7 10.625 10.5 7'
+        stroke='currentColor'
+        strokeWidth='1.5'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+      <path
+        d='M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z'
+        stroke='currentColor'
+        strokeWidth='1.5'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+    </svg>
+  )
+}
+
+export function UploadIc(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width='24px'
+      height='24px'
+      strokeWidth='1.5'
+      viewBox='0 0 24 24'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      color='#000000'
+      {...props}
+    >
+      <path
+        d='M3 20.4V3.6a.6.6 0 01.6-.6h16.8a.6.6 0 01.6.6v16.8a.6.6 0 01-.6.6H3.6a.6.6 0 01-.6-.6z'
+        stroke='currentColor'
+        strokeWidth='1.5'
+      />
+      <path
+        d='M6 18h12M12 14V6m0 0l3.5 3.5M12 6L8.5 9.5'
         stroke='currentColor'
         strokeWidth='1.5'
         strokeLinecap='round'
