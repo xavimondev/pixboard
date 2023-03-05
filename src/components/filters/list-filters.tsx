@@ -1,6 +1,7 @@
 import React from 'react'
 import { CldImage } from 'next-cloudinary'
 import useStore from '@/state/store'
+import { useTransformation } from '@/hooks/useTransformation'
 import { useFilter } from './hooks/useFilter'
 
 const FILTERS = [
@@ -32,16 +33,24 @@ type FilterOptionProps = {
 
 const FilterOption = React.memo(function FilterOption({ filter }: FilterOptionProps) {
   const { filterName } = useStore((state) => state.filterSelected)
+  const mainImage = useStore((state) => state.mainImage)
   const { handleFilters } = useFilter()
+  const { getUrlImageFromFilters } = useTransformation()
   const othersFilters = generateFilter(filter)
-
+  const urlMainImage = mainImage?.imageData.url
   const bgColor =
     filter === filterName
       ? 'bg-sky-700/[0.5] text-sky-500 font-semibold'
       : 'bg-neutral-800 hover:bg-neutral-700 text-gray-200'
+
+  const handleFilter = () => {
+    handleFilters(filter)
+    getUrlImageFromFilters(filter)
+  }
+
   return (
     <button
-      onClick={() => handleFilters(filter)}
+      onClick={handleFilter}
       className={`${bgColor} px-3 py-4 justify-between flex flex-col items-center rounded-lg`}
     >
       <CldImage
@@ -51,7 +60,7 @@ const FilterOption = React.memo(function FilterOption({ filter }: FilterOptionPr
         sepia={filter === 'sepia'}
         grayscale={filter === 'grayscale'}
         effects={othersFilters}
-        src='https://res.cloudinary.com/xavimon/image/upload/c_crop,h_1282,w_1295,x_528,y_-148/c_scale,h_1282,w_1295/v1/pixboard/presets/code_syhhln'
+        src={urlMainImage!}
       />
       <span className='text-sm first-letter:capitalize mt-9'>{filter}</span>
     </button>
