@@ -76,3 +76,7 @@ export const applyQuality = (image: CloudinaryImage, qualitySelected: string) =>
   else q = auto()
   return image.delivery(quality(q))
 }
+
+export const makeFileDownloadable = (image: CloudinaryImage) => {
+  return image.addFlag('attachment')
+}
