@@ -4,7 +4,7 @@ import { ListAvatars } from './list-avatars'
 import { PlaceHolder } from './placeholder'
 import { ShareOption } from './share'
 
-export function AvatarsBar() {
+export function RightHeaderBar() {
   const currentUser = useStore((state) => state.liveblocks.room?.getSelf())
 
   return (

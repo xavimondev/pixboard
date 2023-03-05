@@ -1,4 +1,4 @@
-import { AvatarsBar } from './avatars-bar'
+import { RightHeaderBar } from './right-bar'
 import { Toolbar } from './toolbar'
 
 export function HeaderApp() {
@@ -8,7 +8,7 @@ export function HeaderApp() {
         <span className='font-semibold text-base'>Pixboard.io</span>
       </div>
       <Toolbar />
-      <AvatarsBar />
+      <RightHeaderBar />
     </header>
   )
 }
