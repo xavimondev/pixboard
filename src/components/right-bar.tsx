@@ -7,10 +7,11 @@ import { ResetOption, UploadImageOption } from './undo'
 
 export function RightHeaderBar() {
   const currentUser = useStore((state) => state.liveblocks.room?.getSelf())
+  const mainImage = useStore((state) => state.mainImage)
 
   return (
     <div className='bg-neutral-800 py-2.5 px-4 rounded-full flex space-x-2 shadow-sm'>
-      {!currentUser ? (
+      {!currentUser || !mainImage ? (
         <PlaceHolder length={4} />
       ) : (
         <>
