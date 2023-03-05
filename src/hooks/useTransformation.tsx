@@ -4,7 +4,11 @@ import {
   cropByAspectRatio,
   cropByCustomMeasures,
   getImage,
-  overlayImage
+  makeFileDownloadable,
+  overlayImage,
+  applyBlur,
+  applyQuality,
+  applyOpacity
 } from '@/utils/getUrlImageFromTransformations'
 import { getImageScale } from '@/utils/getScale'
 
@@ -14,6 +18,9 @@ export function useTransformation() {
   const imageTransformedData = useStore((state) => state.imageTransformedData)
   const textBoxObjects = useStore((state) => state.textBoxObjects)
   const filterName = useStore((state) => state.filterSelected.filterName)
+  const blurLevel = useStore((state) => state.blurLevel)
+  const opacityLevel = useStore((state) => state.opacityLevel)
+  const qualitySelected = useStore((state) => state.qualitySelected)
 
   const getUrlImageFromCrop = () => {
     const { x, y, width: widthCrop, height: heightCrop, unit } = cropValue
@@ -90,6 +97,7 @@ export function useTransformation() {
     const { image, height, width } = getUrlImageFromOverlay()
     if (filterName === 'original') {
       return {
+        image,
         url: image.toURL(),
         height,
         width
@@ -98,15 +106,75 @@ export function useTransformation() {
     const imageResult = applyFilters(image, filterName)
     console.log(`Filters: ${imageResult.toURL()}`)
     return {
+      image,
       url: imageResult.toURL(),
       height,
       width
     }
   }
 
+  const getUrlImageFromBlur = () => {
+    const { image, width, height, url } = getUrlImageFromFilters('')
+    if (blurLevel === 0) return { image, url, height, width }
+    const newImageTransformed = applyBlur(image, blurLevel)
+
+    return {
+      image: newImageTransformed,
+      url: newImageTransformed.toURL(),
+      height,
+      width
+    }
+  }
+
+  const getUrlImageFromOpacity = () => {
+    const { image, width, height } = getUrlImageFromBlur()
+    // if (opacityLevel === 0) return { image, url, height, width }
+    const newImageTransformed = applyOpacity(image, opacityLevel)
+
+    return {
+      image: newImageTransformed,
+      url: newImageTransformed.toURL(),
+      height,
+      width
+    }
+  }
+
+  const getUrlImageFromQuality = () => {
+    const { image, height, width } = getUrlImageFromOpacity()
+    // if (qualitySelected === 'auto') return { image, url, height, width }
+    const newImageTransformed = applyQuality(image, qualitySelected)
+
+    return {
+      image: newImageTransformed,
+      url: newImageTransformed.toURL(),
+      height,
+      width
+    }
+  }
+
+  const getGeneralTransformation = () => {
+    const { image, url, height, width } = getUrlImageFromQuality()
+    const fileDownload = makeFileDownloadable(image)
+    return {
+      image,
+      url,
+      height,
+      width,
+      urlDownloadable: fileDownload.toURL()
+    }
+  }
+
+  const getUrlDownloadable = () => {
+    const { image } = getUrlImageFromQuality()
+    const fileDownload = makeFileDownloadable(image)
+    return fileDownload.toURL()
+  }
+
   return {
     getUrlImageFromCrop,
     getUrlImageFromOverlay,
-    getUrlImageFromFilters
+    getUrlImageFromFilters,
+    getUrlDownloadable,
+    getGeneralTransformation
   }
 }
