@@ -3,6 +3,7 @@ import useStore from '@/state/store'
 import { ListAvatars } from './list-avatars'
 import { PlaceHolder } from './placeholder'
 import { ShareOption } from './share'
+import { ResetOption, UploadImageOption } from './undo'
 
 export function RightHeaderBar() {
   const currentUser = useStore((state) => state.liveblocks.room?.getSelf())
@@ -15,6 +16,8 @@ export function RightHeaderBar() {
         <>
           <ListAvatars />
           <ShareOption />
+          <ResetOption />
+          <UploadImageOption />
         </>
       )}
     </div>

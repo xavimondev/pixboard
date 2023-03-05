@@ -46,6 +46,8 @@ type State = {
   setOpacityLevel: (opacityLevel: number) => void
   qualitySelected: string
   setQualitySelected: (qualitySelected: string) => void
+  setInitialConfiguration: () => void
+  undoMainImage: () => void
 }
 
 const client = createClient({
@@ -152,7 +154,24 @@ const useStore = create<WithLiveblocks<State>>()(
       setFilterSelected: (filterSelected: FilterSelected) => set({ filterSelected }),
       setBlurLevel: (blurLevel: number) => set({ blurLevel }),
       setOpacityLevel: (opacityLevel: number) => set({ opacityLevel }),
-      setQualitySelected: (qualitySelected: string) => set({ qualitySelected })
+      setQualitySelected: (qualitySelected: string) => set({ qualitySelected }),
+      setInitialConfiguration: () => {
+        // Undo all configuration
+        set({ mainImage: null })
+        set({ cropValue: DEFAULT_VALUE_CROP })
+        set({ blurLevel: 0 })
+        set({ opacityLevel: 0 })
+        set({ qualitySelected: 'auto' })
+        set({ textBoxObjects: [] })
+        set({ toolSelected: 'crop' })
+        set({ imageTransformedData: null })
+      },
+      undoMainImage: () => {
+        // Keep crop values, filters, overlay, etc
+        set({ mainImage: null })
+        set({ toolSelected: 'crop' })
+        set({ imageTransformedData: null })
+      }
     }),
     {
       client,
