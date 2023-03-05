@@ -6,7 +6,10 @@ import { text } from '@cloudinary/url-gen/qualifiers/source'
 import { TextStyle } from '@cloudinary/url-gen/qualifiers/textStyle'
 import { compass } from '@cloudinary/url-gen/qualifiers/gravity'
 import { Position } from '@cloudinary/url-gen/qualifiers/position'
-import { artisticFilter, grayscale, sepia } from '@cloudinary/url-gen/actions/effect'
+import { artisticFilter, blur, grayscale, sepia } from '@cloudinary/url-gen/actions/effect'
+import { auto, autoBest, autoGood, autoLow } from '@cloudinary/url-gen/qualifiers/quality'
+import { quality } from '@cloudinary/url-gen/actions/delivery'
+import { opacity } from '@cloudinary/url-gen/actions/adjust'
 
 const cld = new Cloudinary({
   cloud: {
@@ -55,4 +58,21 @@ export const applyFilters = (image: CloudinaryImage, filter: string) => {
   else if (filter === 'grayscale') return image.effect(grayscale())
   else if (filter === 'sepia') return image.effect(sepia())
   else return image.effect(artisticFilter(filter))
+}
+
+export const applyBlur = (image: CloudinaryImage, blurLevel: number) => {
+  return image.effect(blur(blurLevel))
+}
+
+export const applyOpacity = (image: CloudinaryImage, opacityLevel: number) => {
+  return image.adjust(opacity(opacityLevel))
+}
+
+export const applyQuality = (image: CloudinaryImage, qualitySelected: string) => {
+  let q = ''
+  if (qualitySelected === 'low') q = autoLow()
+  else if (qualitySelected === 'best') q = autoBest()
+  else if (qualitySelected === 'good') q = autoGood()
+  else q = auto()
+  return image.delivery(quality(q))
 }
