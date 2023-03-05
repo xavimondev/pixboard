@@ -10,12 +10,10 @@ export function BlurTweak() {
         type='range'
         min={0}
         max={2000}
+        defaultValue={0}
         className='w-full h-2 rounded-lg appearance-none cursor-pointer bg-neutral-700'
       />
     </div>
-    /**
-    100 means completely opaque and 0 is completely transparent
-     */
   )
 }
 export function OpacityTweak() {
@@ -32,6 +30,7 @@ export function OpacityTweak() {
         type='range'
         min={0}
         max={100}
+        defaultValue={0}
         className='w-full h-2 rounded-lg appearance-none cursor-pointer bg-neutral-700'
       />
     </div>
@@ -49,12 +48,9 @@ export function QualityTweak() {
           type='radio'
           checked
           name='quality'
-          className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
+          className='w-4 h-4 text-neutral-600 bg-gray-700 border-gray-600'
         />
-        <label
-          htmlFor='radioAuto'
-          className='ml-2 text-sm font-medium text-gray-900 dark:text-gray-300'
-        >
+        <label htmlFor='radioAuto' className='ml-2 text-sm font-medium text-gray-300'>
           Auto
         </label>
       </div>
@@ -63,12 +59,9 @@ export function QualityTweak() {
           id='radioBest'
           type='radio'
           name='quality'
-          className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
+          className='w-4 h-4 text-neutral-600 bg-gray-700 border-gray-600'
         />
-        <label
-          htmlFor='radioBest'
-          className='ml-2 text-sm font-medium text-gray-900 dark:text-gray-300'
-        >
+        <label htmlFor='radioBest' className='ml-2 text-sm font-medium text-gray-300'>
           Best
         </label>
       </div>
@@ -77,12 +70,9 @@ export function QualityTweak() {
           id='radioGood'
           type='radio'
           name='quality'
-          className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
+          className='w-4 h-4 text-neutral-600 bg-gray-700 border-gray-600'
         />
-        <label
-          htmlFor='radioGood'
-          className='ml-2 text-sm font-medium text-gray-900 dark:text-gray-300'
-        >
+        <label htmlFor='radioGood' className='ml-2 text-sm font-medium text-gray-300'>
           Good
         </label>
       </div>
@@ -91,12 +81,9 @@ export function QualityTweak() {
           id='radioLow'
           type='radio'
           name='quality'
-          className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
+          className='w-4 h-4 text-neutral-600 bg-gray-700 border-gray-600'
         />
-        <label
-          htmlFor='radioLow'
-          className='ml-2 text-sm font-medium text-gray-900 dark:text-gray-300'
-        >
+        <label htmlFor='radioLow' className='ml-2 text-sm font-medium text-gray-300'>
           Low
         </label>
       </div>
