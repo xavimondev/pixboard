@@ -1,10 +1,13 @@
 import Image from 'next/image'
 import useStore from '@/state/store'
+import { getImageScale } from '@/utils/getScale'
 import { ListFilters } from './list-filters'
 
 export function Filters() {
   const imageTransformedData = useStore((state) => state.imageTransformedData)
   const { url, width, height } = imageTransformedData!
+  const { scaleWidth, scaleHight } = getImageScale(width, height)
+
   return (
     <>
       <div className='flex flex-row justify-between w-full space-x-4'>
@@ -13,8 +16,8 @@ export function Filters() {
           <Image
             alt='Imagen choosen by user'
             src={url}
-            width={width}
-            height={height}
+            width={scaleWidth}
+            height={scaleHight}
             className='max-h-full max-w-full object-cover'
           />
         </div>
