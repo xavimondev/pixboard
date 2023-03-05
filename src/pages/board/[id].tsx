@@ -4,21 +4,25 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { authOptions } from '../api/auth/[...nextauth]'
 import useStore from '@/state/store'
-import { User } from '@/types/user'
-import { ListCursors } from '@/components/list-cursors'
-import { Cropper } from '@/components/cropper'
+import type { PresetImage } from '@/types/board'
+import type { User } from '@/types/user'
 import { Layout } from '@/components/layout'
+import { StarterFile } from '@/components/starter-file'
+import { Dropzone } from '@/components/dropzone'
+import { PresetsImages } from '@/components/presets-images'
+import { Editor } from '@/components/editor'
 
 type BoardProps = {
   userInfo: User
+  presetImages: PresetImage[]
 }
 
-export default function BoardView({ userInfo }: BoardProps) {
+export default function BoardView({ userInfo, presetImages }: BoardProps) {
   const {
     liveblocks: { enterRoom, leaveRoom }
   } = useStore()
   const { query } = useRouter()
-  const setCursor = useStore((state) => state.setCursor)
+  const mainImage = useStore((state) => state.mainImage)
 
   useEffect(() => {
     if (!query.id) return
@@ -32,13 +36,17 @@ export default function BoardView({ userInfo }: BoardProps) {
 
   return (
     <Layout user={userInfo}>
-      <div
-        className='top-6 min-h-screen h-full w-full'
-        onPointerMove={(e) => setCursor({ x: e.clientX, y: e.clientY })}
-      >
-        <Cropper />
-        <ListCursors />
-      </div>
+      {mainImage ? (
+        <Editor />
+      ) : (
+        <StarterFile>
+          <Dropzone />
+          <p className='text-sm text-gray-400 mb-2 font-medium'>
+            Or maybe you want to choose one of these presets to start quickly.
+          </p>
+          <PresetsImages presetsImages={presetImages} />
+        </StarterFile>
+      )}
     </Layout>
   )
 }
@@ -61,9 +69,32 @@ export const getServerSideProps: GetServerSideProps<ServerSideProps> = async ({ 
     avatar: user.avatar
   }
 
+  const results = await fetch(
+    `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_NAME}/resources/image/upload?prefix=pixboard/presets`,
+    {
+      headers: {
+        Authorization: `Basic ${Buffer.from(
+          process.env.CLOUDINARY_API_KEY + ':' + process.env.CLOUDINARY_API_SECRET
+        ).toString('base64')}`
+      }
+    }
+  )
+  const images = await results.json()
+
+  const presetImages = images.resources.map(
+    ({ asset_id, width, height, secure_url, public_id }: any) => ({
+      id: asset_id,
+      width,
+      height,
+      url: secure_url,
+      publicId: public_id
+    })
+  )
+
   return {
     props: {
-      userInfo
+      userInfo,
+      presetImages
     }
   }
 }
