@@ -38,19 +38,26 @@ const FilterOption = React.memo(function FilterOption({ filter }: FilterOptionPr
   const { getUrlImageFromFilters } = useTransformation()
   const othersFilters = generateFilter(filter)
   const urlMainImage = mainImage?.imageData.url
+  const imageTransformedData = useStore((state) => state.imageTransformedData)
+  const setImagetransformedData = useStore((state) => state.setImagetransformedData)
+
   const bgColor =
     filter === filterName
       ? 'bg-sky-700/[0.5] text-sky-500 font-semibold'
       : 'bg-neutral-800 hover:bg-neutral-700 text-gray-200'
 
-  const handleFilter = () => {
+  const applyFilter = () => {
     handleFilters(filter)
-    getUrlImageFromFilters(filter)
+    const url = getUrlImageFromFilters(filter)
+    setImagetransformedData({
+      ...imageTransformedData!,
+      url
+    })
   }
 
   return (
     <button
-      onClick={handleFilter}
+      onClick={applyFilter}
       className={`${bgColor} px-3 py-4 justify-between flex flex-col items-center rounded-lg`}
     >
       <CldImage
