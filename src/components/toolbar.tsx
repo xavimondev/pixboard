@@ -13,7 +13,7 @@ type ToolbarItemProps = {
 function ToolbarItem({ id, children }: ToolbarItemProps) {
   const toolSelected = useStore((state) => state.toolSelected)
   const setToolSelected = useStore((state) => state.setToolSelected)
-  const { getUrlImageFromFilters } = useTransformation()
+  const { getGeneralTransformation } = useTransformation()
   const bgColor =
     toolSelected === id ? 'bg-sky-700/[0.5] text-sky-500 rounded-md' : 'hover:bg-neutral-600'
   const textColor = toolSelected === id ? 'text-sky-500' : 'text-white'
@@ -25,11 +25,12 @@ function ToolbarItem({ id, children }: ToolbarItemProps) {
         className={`hover:rounded-md p-1.5 ${bgColor}`}
         onClick={() => {
           setToolSelected(id)
-          const { url, width, height } = getUrlImageFromFilters('original')
+          const { url, width, height, urlDownloadable } = getGeneralTransformation()
           setImagetransformedData({
             url,
             width,
-            height
+            height,
+            urlDownloadable
           })
         }}
       >
@@ -41,10 +42,12 @@ function ToolbarItem({ id, children }: ToolbarItemProps) {
 
 export function Toolbar() {
   const currentUser = useStore((state) => state.liveblocks.room?.getSelf())
+  const mainImage = useStore((state) => state.mainImage)
+
   return (
     <div className='bg-neutral-800 shadow-md py-1.5 px-6 rounded-full'>
       <div className='flex space-x-6'>
-        {!currentUser ? (
+        {!currentUser || !mainImage ? (
           <PlaceHolder length={4} />
         ) : (
           <>
