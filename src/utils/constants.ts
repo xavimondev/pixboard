@@ -40,3 +40,6 @@ export const DEFAULT_VALUE_CROP: Crop = {
   width: 100,
   height: 100
 }
+
+const isDevelopment = process.env.NODE_ENV === 'development'
+export const APP_URL = isDevelopment ? 'http://localhost:3000' : 'https://pixboard.vercel.app'
