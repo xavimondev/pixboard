@@ -5,7 +5,6 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "canvas-oversize": "npx rimraf ./node_modules/canvas",
     "postbuild": "rm -rf node_modules/canvas",
     "start": "next start",
     "lint": "next lint",
