@@ -1,5 +1,6 @@
 import useStore from '@/state/store'
 import {
+  applyFilters,
   cropByAspectRatio,
   cropByCustomMeasures,
   getImage,
@@ -12,6 +13,7 @@ export function useTransformation() {
   const mainImage = useStore((state) => state.mainImage)
   const imageTransformedData = useStore((state) => state.imageTransformedData)
   const textBoxObjects = useStore((state) => state.textBoxObjects)
+  // const filterName = useStore((state) => state.filterSelected.filterName)
 
   const getUrlImageFromCrop = () => {
     const { x, y, width: widthCrop, height: heightCrop, unit } = cropValue
@@ -68,8 +70,16 @@ export function useTransformation() {
     }
   }
 
+  const getUrlImageFromFilters = (filter: string) => {
+    const { image } = getUrlImageFromOverlay()
+    const imageResult = applyFilters(image, filter)
+    console.log(imageResult.toURL())
+    return imageResult.toURL()
+  }
+
   return {
     getUrlImageFromCrop,
-    getUrlImageFromOverlay
+    getUrlImageFromOverlay,
+    getUrlImageFromFilters
   }
 }
