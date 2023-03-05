@@ -1,5 +1,6 @@
 import React from 'react'
 import useStore from '@/state/store'
+import { copyTextToClipboard } from '@/utils/copyToClipboard'
 
 export function BlurTweak() {
   const setBlurLevel = useStore((state) => state.setBlurLevel)
@@ -97,6 +98,8 @@ export function QualityTweak() {
 }
 
 export function ListTools() {
+  const imageTransformedData = useStore((state) => state.imageTransformedData)
+
   return (
     <div className='flex flex-col gap-10 h-full w-full'>
       <BlurTweak />
@@ -105,9 +108,12 @@ export function ListTools() {
       <div className='flex flex-col gap-1'>
         <span className='block mb-3 font-medium text-white'>Download</span>
         <div className='flex flex-row items-center gap-4'>
-          <div className='border border-neutral-900 rounded-md max-h-36 overflow-hidden p-2 bg-neutral-800'>
-            <p className='font-medium text-sm text-gray-400 truncate h-full'>
-              https://res.cloudinary.com/product-demos/image/upload/c_fill,g_center,h_1580,w_1960/l_mew:Fashion:overlays:01.png/c_limit,fl_relative,h_0.1
+          <div className='border border-neutral-900 rounded-md max-h-36 overflow-hidden p-2 bg-neutral-800 cursor-pointer'>
+            <p
+              className='font-medium text-sm text-gray-400 truncate h-full'
+              onClick={() => copyTextToClipboard(imageTransformedData!.url)}
+            >
+              {imageTransformedData?.url}
             </p>
           </div>
           <div className='flex flex-row justify-between'>
