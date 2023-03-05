@@ -34,6 +34,7 @@ export type ImageTransformed = {
   url: string
   width: number
   height: number
+  urlDownloadable: string
 }
 
 export interface ITextOptionsOverlay extends ITextOptions {
