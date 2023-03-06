@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { authOptions } from '../api/auth/[...nextauth]'
 import useStore from '@/state/store'
+import { getBoardId } from '@/utils/getRandomData'
 import type { PresetImage } from '@/types/board'
 import type { User } from '@/types/user'
 import { Layout } from '@/components/layout'
@@ -17,6 +18,8 @@ type BoardProps = {
   userInfo: User
   presetImages: PresetImage[]
 }
+
+const MAX_USERS = 4
 
 export default function BoardView({ userInfo, presetImages }: BoardProps) {
   const {
@@ -71,7 +74,11 @@ export default function BoardView({ userInfo, presetImages }: BoardProps) {
   )
 }
 type ServerSideProps = {}
-export const getServerSideProps: GetServerSideProps<ServerSideProps> = async ({ req, res }) => {
+export const getServerSideProps: GetServerSideProps<ServerSideProps> = async ({
+  req,
+  res,
+  query
+}) => {
   const session = await getServerSession(req, res, authOptions)
 
   if (!session) {
@@ -110,6 +117,33 @@ export const getServerSideProps: GetServerSideProps<ServerSideProps> = async ({ 
       publicId: public_id
     })
   )
+  const roomId = query.id
+
+  try {
+    // Only 4 users are allowed, so I need to validate this
+    const resultLive = await fetch(`https://api.liveblocks.io/v2/rooms/${roomId}/active_users`, {
+      headers: {
+        Authorization: `Bearer ${process.env.LIVEBLOCKS_SECRET}`
+      }
+    })
+
+    const activeUsers = await resultLive.json()
+    if (activeUsers) {
+      // console.log(activeUsers)
+      // @ts-ignore
+      const totalUsersActive = activeUsers.data
+      if (totalUsersActive.length === MAX_USERS) {
+        return {
+          redirect: {
+            destination: `/board/${getBoardId()}`,
+            permanent: false
+          }
+        }
+      }
+    }
+  } catch (error) {
+    console.log(error)
+  }
 
   return {
     props: {
