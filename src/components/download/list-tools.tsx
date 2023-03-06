@@ -36,7 +36,7 @@ export function OpacityTweak() {
   return (
     <div className='flex flex-col w-full'>
       <label htmlFor='opacity' className='block mb-2 font-medium text-white'>
-        Opacity level: {opacityLevel}
+        Opacity level: {opacityLevel === -1 ? 'Default' : opacityLevel}
       </label>
       <span className='text-sm text-gray-400 w-full mb-2'>
         (100 means completely opaque and 0 is completely transparent)

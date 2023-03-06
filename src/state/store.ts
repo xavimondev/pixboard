@@ -100,7 +100,7 @@ const useStore = create<WithLiveblocks<State>>()(
         others: undefined
       },
       blurLevel: 0,
-      opacityLevel: 0,
+      opacityLevel: -1,
       qualitySelected: 'auto',
       setCursor: (cursor) => set({ cursor }),
       setCropValue: (cropValue: Crop) => set({ cropValue }),
@@ -160,7 +160,7 @@ const useStore = create<WithLiveblocks<State>>()(
         set({ mainImage: null })
         set({ cropValue: DEFAULT_VALUE_CROP })
         set({ blurLevel: 0 })
-        set({ opacityLevel: 0 })
+        set({ opacityLevel: -1 })
         set({ qualitySelected: 'auto' })
         set({ textBoxObjects: [] })
         set({ toolSelected: 'crop' })

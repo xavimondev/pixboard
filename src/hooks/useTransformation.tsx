@@ -127,8 +127,8 @@ export function useTransformation() {
   }
 
   const getUrlImageFromOpacity = () => {
-    const { image, width, height } = getUrlImageFromBlur()
-    // if (opacityLevel === 0) return { image, url, height, width }
+    const { image, width, height, url } = getUrlImageFromBlur()
+    if (opacityLevel === -1) return { image, url, height, width }
     const newImageTransformed = applyOpacity(image, opacityLevel)
 
     return {
