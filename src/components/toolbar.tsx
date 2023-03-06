@@ -18,6 +18,7 @@ function ToolbarItem({ id, children }: ToolbarItemProps) {
     toolSelected === id ? 'bg-sky-700/[0.5] text-sky-500 rounded-md' : 'hover:bg-neutral-600'
   const textColor = toolSelected === id ? 'text-sky-500' : 'text-white'
   const setImagetransformedData = useStore((state) => state.setImagetransformedData)
+  const setIsLoadingImage = useStore((state) => state.setIsLoadingImage)
 
   return (
     <>
@@ -32,6 +33,7 @@ function ToolbarItem({ id, children }: ToolbarItemProps) {
             height,
             urlDownloadable
           })
+          setIsLoadingImage(true)
         }}
       >
         {children(textColor)}
