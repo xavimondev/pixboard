@@ -96,7 +96,7 @@ export function useTransformation() {
         )
       }
     })
-    console.log(`Overlay: ${image.toURL()}`)
+    // console.log(`Overlay: ${image.toURL()}`)
     return {
       image,
       width,
@@ -116,7 +116,7 @@ export function useTransformation() {
       }
     }
     const imageResult = applyFilters(image, filterToApply!)
-    console.log(`Filters: ${imageResult.toURL()}`)
+    // console.log(`Filters: ${imageResult.toURL()}`)
     return {
       image,
       url: imageResult.toURL(),
