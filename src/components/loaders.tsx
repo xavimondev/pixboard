@@ -20,3 +20,12 @@ export function BoardLoader() {
     </div>
   )
 }
+
+export function ImageLoader() {
+  return (
+    <div className='flex flex-col space-y-5 justify-center items-center w-full h-full'>
+      <LoadingIc className='h-20 w-22 text-white' />
+      <p className='text-center text-xl font-medium text-gray-300'>Loading image...</p>
+    </div>
+  )
+}
