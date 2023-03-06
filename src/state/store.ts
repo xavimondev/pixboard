@@ -8,7 +8,8 @@ import type {
   Dimensions,
   FilterSelected,
   ImageTransformed,
-  MainImage
+  MainImage,
+  FontStyles
 } from '@/types/board'
 import { DEFAULT_VALUE_CROP } from '@/utils/constants'
 
@@ -49,6 +50,12 @@ type State = {
   setQualitySelected: (qualitySelected: string) => void
   setInitialConfiguration: () => void
   undoMainImage: () => void
+  colorTextSelected: string
+  setColorTextSelected: (colorTextSelected: string) => void
+  sizeTextSelected: number
+  setSizeTextSelected: (sizeTextSelected: number) => void
+  fontStyles: FontStyles
+  setFontStyles: (fontStyles: FontStyles) => void
 }
 
 const client = createClient({
@@ -103,6 +110,13 @@ const useStore = create<WithLiveblocks<State>>()(
       blurLevel: 0,
       opacityLevel: -1,
       qualitySelected: 'auto',
+      colorTextSelected: '#000000',
+      sizeTextSelected: 22,
+      fontStyles: {
+        fontWeight: 'normal',
+        underline: false,
+        fontStyle: 'normal'
+      },
       setCursor: (cursor) => set({ cursor }),
       setCropValue: (cropValue: Crop) => set({ cropValue }),
       setPresetSelected: (presetSelected: string) => set({ presetSelected }),
@@ -179,7 +193,10 @@ const useStore = create<WithLiveblocks<State>>()(
         set({ mainImage: null })
         set({ toolSelected: 'crop' })
         set({ imageTransformedData: null })
-      }
+      },
+      setColorTextSelected: (colorTextSelected: string) => set({ colorTextSelected }),
+      setSizeTextSelected: (sizeTextSelected: number) => set({ sizeTextSelected }),
+      setFontStyles: (fontStyles: FontStyles) => set({ fontStyles })
     }),
     {
       client,

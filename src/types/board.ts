@@ -50,3 +50,9 @@ export type FilterSelected = {
   isGrayScale: boolean
   others: any // TODO: Fix any
 }
+
+export type FontStyles = {
+  fontWeight: string
+  underline: boolean
+  fontStyle: string
+}

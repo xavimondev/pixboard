@@ -24,7 +24,10 @@ const valuesTextBox: ITextOptionsOverlay = {
   hasBorders: true,
   borderDashArray: [4],
   borderColor: 'red',
-  text: 'Enter Text'
+  text: 'Enter Text',
+  fill: '#000000',
+  fontWeight: 'normal',
+  underline: false
 }
 
 export const TextOverlay = React.memo(function TextOverlay() {
@@ -235,9 +238,35 @@ export const TextOverlay = React.memo(function TextOverlay() {
     }
   }
 
+  const changeColorOverlay = (value: string) => {
+    if (canvasFabric) {
+      const activeOverlay = canvasFabric.getActiveObject() as IText
+      if (!activeOverlay) return
+
+      activeOverlay.set('fill', value)
+      activeOverlay.enterEditing()
+    }
+  }
+
+  const changeStyleOverlay = (styles: any) => {
+    if (canvasFabric) {
+      const activeOverlay = canvasFabric.getActiveObject() as IText
+      if (!activeOverlay) return
+      activeOverlay.set(styles)
+      canvasFabric.renderAll()
+      // canvasFabric.setActiveObject(activeOverlay)
+      // activeOverlay.enterEditing()
+    }
+  }
+
   return (
     <div className='flex flex-col items-center w-full h-full gap-6'>
-      <ToolsOverlay addText={addText} deleteText={deleteText} />
+      <ToolsOverlay
+        addText={addText}
+        deleteText={deleteText}
+        changeColorOverlay={changeColorOverlay}
+        changeStyleOverlay={changeStyleOverlay}
+      />
       <div className='border-1 min-h-[400px] min-w-[600px] max-h-[600px] max-w-[800px] flex justify-center items-center bg-default-image'>
         <canvas ref={canvasEl} />
       </div>
