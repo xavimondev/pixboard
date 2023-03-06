@@ -1,6 +1,6 @@
 import React from 'react'
 import useStore from '@/state/store'
-import { BoldIc, ItalicIc, TrashIc, UnderlineIc } from '@/components/icons'
+import { AddIc, BoldIc, ItalicIc, TrashIc, UnderlineIc } from '@/components/icons'
 
 type ToolsOverlayProps = {
   addText: () => void
@@ -26,14 +26,11 @@ export function ToolsOverlay({
 
   return (
     <>
-      <div className='flex flex-row items-center gap-6 bg-neutral-800 py-3.5 px-7 rounded-md'>
-        <button
-          className='text-sky-500 font-semibold text-base bg-sky-700/[0.5] py-1 px-4 rounded-md flex items-center'
-          onClick={addText}
-        >
-          Add Text
+      <div className='flex flex-col gap-6 bg-neutral-800 p-4 rounded-md'>
+        <button className='bg-sky-700/[0.5] p-2 rounded-md flex justify-center' onClick={addText}>
+          <AddIc className='h-5 w-5 text-sky-500' />
         </button>
-        <div className='flex flex-row items-center gap-4'>
+        <div className='flex flex-col gap-4'>
           <div className='h-full'>
             <input
               type='number'
@@ -60,9 +57,9 @@ export function ToolsOverlay({
             />
           </div>
         </div>
-        <div className='flex flex-row items-center gap-3'>
+        <div className='flex flex-col gap-3'>
           <button
-            className='rounded-md  p-1 bg-neutral-600'
+            className='flex justify-center rounded-md p-1 bg-neutral-600'
             onClick={() => {
               const styleBold = {
                 ...fontStyles,
@@ -75,7 +72,7 @@ export function ToolsOverlay({
             <BoldIc className='h-5 w-5 text-white font-bold' />
           </button>
           <button
-            className='rounded-md  p-1 bg-neutral-600'
+            className='flex justify-center rounded-md p-1 bg-neutral-600'
             onClick={() => {
               const styleItalic = {
                 ...fontStyles,
@@ -88,7 +85,7 @@ export function ToolsOverlay({
             <ItalicIc className='h-5 w-5 text-white font-bold' />
           </button>
           <button
-            className='rounded-md  p-1 bg-neutral-600'
+            className='flex justify-center rounded-md p-2 bg-neutral-600'
             onClick={() => {
               const styleItalic = {
                 ...fontStyles,
@@ -103,10 +100,10 @@ export function ToolsOverlay({
         </div>
         <span className='' />
         <button
-          className='bg-red-700/[0.5] py-1 px-1.5 rounded-md flex items-center'
+          className='bg-red-700/[0.5] p-2 rounded-md flex justify-center'
           onClick={deleteText}
         >
-          <TrashIc className='h-5 w-5 text-red-500 font-bold' />
+          <TrashIc className='h-5 w-5 text-red-500' />
         </button>
       </div>
     </>
