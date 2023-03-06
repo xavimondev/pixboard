@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react'
 import { fabric } from 'fabric'
 import type { IText } from 'fabric/fabric-impl'
 import { nanoid } from 'nanoid'
-import { useTransformation } from '@/hooks/useTransformation'
 import useStore from '@/state/store'
 import { ITextOptionsOverlay } from '@/types/board'
 import { getImageScale } from '@/utils/getScale'
@@ -44,6 +43,7 @@ export const TextOverlay = React.memo(function TextOverlay() {
   const isTyping = useStore((state) => state.isTyping)
   const currentUser = useStore((state) => state.liveblocks.room?.getSelf())
   const imageTransformedData = useStore((state) => state.imageTransformedData)
+  const removeTextBoxObject = useStore((state) => state.removeTextBoxObject)
 
   useEffect(() => {
     if (!canvasEl.current) return
@@ -119,7 +119,7 @@ export const TextOverlay = React.memo(function TextOverlay() {
           const textBox = new fabric.IText('Enter Text', obj)
           textBox.setControlsVisibility({ mt: false, mb: false, mtr: false }) // controls textbox
           canvasFabric.add(textBox)
-          canvasFabric?.renderAll()
+          canvasFabric.renderAll()
         }
       })
       setIsFirstRender(false)
@@ -127,18 +127,39 @@ export const TextOverlay = React.memo(function TextOverlay() {
   }, [textBoxObjects, canvasFabric])
 
   useEffect(() => {
-    if (!canvasFabric || textBoxObjects.length === 0) return
+    if (!canvasFabric) return
 
-    const { owner, id } = textBoxObjects.at(-1) // Getting last overlay saved
-
-    if (!isFirstRender && owner !== currentUser?.id) {
-      valuesTextBox.id = id
-      valuesTextBox.owner = owner
-      const textBox = new fabric.IText('Enter Text', valuesTextBox)
-      textBox.set('editable', true)
-      textBox.setControlsVisibility({ mt: false, mb: false, mtr: false }) // controls textbox
-      canvasFabric.add(textBox)
-      canvasFabric.renderAll()
+    if (!isFirstRender) {
+      // console.log(textBoxObjects.length, canvasFabric.getObjects().length)
+      if (textBoxObjects.length < canvasFabric.getObjects().length) {
+        // Removing all objects in canvas
+        canvasFabric.remove(...canvasFabric.getObjects())
+        // Put this code inside Custom Hook
+        // Showing objects again
+        const { width, height } = imageTransformedData!
+        const { scaleWidth, scaleHight } = getImageScale(width, height)
+        console.log(textBoxObjects)
+        textBoxObjects.forEach((obj: fabric.Object) => {
+          if (obj.left! <= scaleWidth && obj.top! <= scaleHight) {
+            const textBox = new fabric.IText('Enter Text', obj)
+            textBox.setControlsVisibility({ mt: false, mb: false, mtr: false }) // controls textbox
+            canvasFabric.add(textBox)
+            canvasFabric.renderAll()
+          }
+        })
+        // End code inside Custom Hook
+        return
+      }
+      const { owner, id } = textBoxObjects.at(-1) // Getting last overlay saved
+      if (owner !== currentUser?.id) {
+        valuesTextBox.id = id
+        valuesTextBox.owner = owner
+        const textBox = new fabric.IText('Enter Text', valuesTextBox)
+        textBox.set('editable', true)
+        textBox.setControlsVisibility({ mt: false, mb: false, mtr: false }) // controls textbox
+        canvasFabric.add(textBox)
+        canvasFabric.renderAll()
+      }
     }
   }, [textBoxObjects.length, canvasFabric])
 
@@ -202,9 +223,21 @@ export const TextOverlay = React.memo(function TextOverlay() {
     if (isFirstRender) setIsFirstRender(false)
   }
 
+  const deleteText = () => {
+    if (canvasFabric) {
+      const activeOverlay = canvasFabric.getActiveObject()
+      if (activeOverlay) {
+        // canvasFabric.remove(activeOverlay)
+        // @ts-ignore
+        const { id } = activeOverlay
+        removeTextBoxObject(id)
+      }
+    }
+  }
+
   return (
     <div className='flex flex-col items-center w-full h-full gap-6'>
-      <ToolsOverlay addText={addText} />
+      <ToolsOverlay addText={addText} deleteText={deleteText} />
       <div className='border-1 min-h-[400px] min-w-[600px] max-h-[600px] max-w-[800px] flex justify-center items-center bg-default-image'>
         <canvas ref={canvasEl} />
       </div>

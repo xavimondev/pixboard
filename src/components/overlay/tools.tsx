@@ -2,9 +2,10 @@ import { BoldIc, ItalicIc, TrashIc, UnderlineIc } from '../icons'
 
 type ToolsOverlayProps = {
   addText: () => void
+  deleteText: () => void
 }
 
-export function ToolsOverlay({ addText }: ToolsOverlayProps) {
+export function ToolsOverlay({ addText, deleteText }: ToolsOverlayProps) {
   return (
     <>
       <div className='flex flex-row items-center gap-6 bg-neutral-800 py-3.5 px-7 rounded-md'>
@@ -40,7 +41,10 @@ export function ToolsOverlay({ addText }: ToolsOverlayProps) {
           </button>
         </div>
         <span className='' />
-        <button className='bg-red-700/[0.5] py-1 px-1.5 rounded-md flex items-center'>
+        <button
+          className='bg-red-700/[0.5] py-1 px-1.5 rounded-md flex items-center'
+          onClick={deleteText}
+        >
           <TrashIc className='h-5 w-5 text-red-500 font-bold' />
         </button>
       </div>

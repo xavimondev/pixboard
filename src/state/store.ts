@@ -23,6 +23,7 @@ type State = {
   setPresetSelected: (preset: string) => void
   textBoxObjects: any
   addTextBoxObject: (objectText: any) => void
+  removeTextBoxObject: (idTextObject: string) => void
   selectedOverlay: string | null
   isDragging: boolean
   onPointerOverlayDown: (overlayId: string) => void
@@ -107,6 +108,13 @@ const useStore = create<WithLiveblocks<State>>()(
       setPresetSelected: (presetSelected: string) => set({ presetSelected }),
       addTextBoxObject: (objectText: any) =>
         set((prev) => ({ textBoxObjects: prev.textBoxObjects.concat(objectText) })),
+      removeTextBoxObject: (idTextBox: string) => {
+        const { textBoxObjects } = get()
+        const newTextBoxObjects = textBoxObjects.filter(
+          (textObject: any) => textObject.id !== idTextBox
+        )
+        set({ textBoxObjects: newTextBoxObjects })
+      },
       onPointerOverlayUp: () => set({ isDragging: false }),
       onPointerOverlayDown: (overlayId: string) => {
         set({ selectedOverlay: overlayId })
