@@ -5,18 +5,22 @@ import { BoldIc, ItalicIc, TrashIc, UnderlineIc } from '@/components/icons'
 type ToolsOverlayProps = {
   addText: () => void
   deleteText: () => void
-  changeColorOverlay: (property: string, value: string) => void
+  changeColorOverlay: (value: string) => void
   changeStyleOverlay: (styles: any) => void
+  changeSizeOverlay: (fontSize: number) => void
 }
 
 export function ToolsOverlay({
   addText,
   deleteText,
   changeColorOverlay,
-  changeStyleOverlay
+  changeStyleOverlay,
+  changeSizeOverlay
 }: ToolsOverlayProps) {
   const colorTextSelected = useStore((state) => state.colorTextSelected)
   const setColorTextSelected = useStore((state) => state.setColorTextSelected)
+  const setSizeTextSelected = useStore((state) => state.setSizeTextSelected)
+  const sizeTextSelected = useStore((state) => state.sizeTextSelected)
   const setFontStyles = useStore((state) => state.setFontStyles)
   const fontStyles = useStore((state) => state.fontStyles)
 
@@ -34,11 +38,13 @@ export function ToolsOverlay({
             <input
               type='number'
               className='border border-gray-50 rounded-sm'
-              value={22}
+              value={sizeTextSelected}
               max={100}
               min={1}
               onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-                changeColorOverlay('size', evt.target.value)
+                const fontSize = Number(evt.target.value)
+                setSizeTextSelected(fontSize)
+                changeSizeOverlay(fontSize)
               }}
             />
           </div>
@@ -49,6 +55,7 @@ export function ToolsOverlay({
               value={colorTextSelected}
               onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
                 setColorTextSelected(evt.target.value)
+                changeColorOverlay(evt.target.value)
               }}
             />
           </div>

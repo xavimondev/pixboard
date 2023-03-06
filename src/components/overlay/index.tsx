@@ -244,7 +244,7 @@ export const TextOverlay = React.memo(function TextOverlay() {
       if (!activeOverlay) return
 
       activeOverlay.set('fill', value)
-      activeOverlay.enterEditing()
+      canvasFabric.renderAll()
     }
   }
 
@@ -259,6 +259,15 @@ export const TextOverlay = React.memo(function TextOverlay() {
     }
   }
 
+  const changeSizeOverlay = (fontSize: number) => {
+    if (canvasFabric) {
+      const activeOverlay = canvasFabric.getActiveObject() as IText
+      if (!activeOverlay) return
+      activeOverlay.set('fontSize', fontSize)
+      canvasFabric.renderAll()
+    }
+  }
+
   return (
     <div className='flex flex-col items-center w-full h-full gap-6'>
       <ToolsOverlay
@@ -266,6 +275,7 @@ export const TextOverlay = React.memo(function TextOverlay() {
         deleteText={deleteText}
         changeColorOverlay={changeColorOverlay}
         changeStyleOverlay={changeStyleOverlay}
+        changeSizeOverlay={changeSizeOverlay}
       />
       <div className='border-1 min-h-[400px] min-w-[600px] max-h-[600px] max-w-[800px] flex justify-center items-center bg-default-image'>
         <canvas ref={canvasEl} />
