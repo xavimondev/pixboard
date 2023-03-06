@@ -58,16 +58,17 @@ export function useTransformation() {
     }
   }
 
-  const getUrlImageFromOverlay = () => {
+  const getUrlImageFromOverlay = (toolAux?: string, valueAux?: string) => {
     const { image, width, height } = getUrlImageFromCrop()
-    if (textBoxObjects.length === 0 || !imageTransformedData) {
+    // I validate toolAux because I don't want to display overlays generated on the image
+    if (textBoxObjects.length === 0 || !imageTransformedData || toolAux === 'overlay') {
       return {
         image,
         width,
         height
       }
     }
-
+    // console.log(toolAux)
     const { width: widthFromImageTransformed, height: heightFromImageTransformed } =
       imageTransformedData!
     const { scaleWidth: renderedWidth, scaleHight: renderedHeight } = getImageScale(
@@ -103,9 +104,10 @@ export function useTransformation() {
     }
   }
 
-  const getUrlImageFromFilters = (filter: string) => {
-    const { image, height, width } = getUrlImageFromOverlay()
-    if (filterName === 'original') {
+  const getUrlImageFromFilters = (toolAux?: string, valueAux?: string) => {
+    const filterToApply = toolAux === 'filter' ? valueAux : filterName
+    const { image, height, width } = getUrlImageFromOverlay(toolAux, filterToApply)
+    if (filterToApply === 'original') {
       return {
         image,
         url: image.toURL(),
@@ -113,7 +115,7 @@ export function useTransformation() {
         width
       }
     }
-    const imageResult = applyFilters(image, filterName)
+    const imageResult = applyFilters(image, filterToApply!)
     console.log(`Filters: ${imageResult.toURL()}`)
     return {
       image,
@@ -123,8 +125,8 @@ export function useTransformation() {
     }
   }
 
-  const getUrlImageFromBlur = () => {
-    const { image, width, height, url } = getUrlImageFromFilters('')
+  const getUrlImageFromBlur = (toolAux?: string, valueAux?: string) => {
+    const { image, width, height, url } = getUrlImageFromFilters(toolAux, valueAux)
     if (blurLevel === 0) return { image, url, height, width }
     const newImageTransformed = applyBlur(image, blurLevel)
 
@@ -136,8 +138,8 @@ export function useTransformation() {
     }
   }
 
-  const getUrlImageFromOpacity = () => {
-    const { image, width, height, url } = getUrlImageFromBlur()
+  const getUrlImageFromOpacity = (toolAux?: string, valueAux?: string) => {
+    const { image, width, height, url } = getUrlImageFromBlur(toolAux, valueAux)
     if (opacityLevel === -1) return { image, url, height, width }
     const newImageTransformed = applyOpacity(image, opacityLevel)
 
@@ -149,8 +151,8 @@ export function useTransformation() {
     }
   }
 
-  const getUrlImageFromQuality = () => {
-    const { image, height, width } = getUrlImageFromOpacity()
+  const getUrlImageFromQuality = (toolAux?: string, valueAux?: string) => {
+    const { image, height, width } = getUrlImageFromOpacity(toolAux, valueAux)
     // if (qualitySelected === 'auto') return { image, url, height, width }
     const newImageTransformed = applyQuality(image, qualitySelected)
 
@@ -162,8 +164,8 @@ export function useTransformation() {
     }
   }
 
-  const getGeneralTransformation = () => {
-    const { image, url, height, width } = getUrlImageFromQuality()
+  const getGeneralTransformation = (toolAux?: string, valueAux?: string) => {
+    const { image, url, height, width } = getUrlImageFromQuality(toolAux, valueAux)
     const fileDownload = makeFileDownloadable(image)
     return {
       image,

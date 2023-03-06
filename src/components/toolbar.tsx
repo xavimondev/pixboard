@@ -26,7 +26,7 @@ function ToolbarItem({ id, children }: ToolbarItemProps) {
         className={`hover:rounded-md p-1.5 ${bgColor}`}
         onClick={() => {
           setToolSelected(id)
-          const { url, width, height, urlDownloadable } = getGeneralTransformation()
+          const { url, width, height, urlDownloadable } = getGeneralTransformation(id)
           setImagetransformedData({
             url,
             width,

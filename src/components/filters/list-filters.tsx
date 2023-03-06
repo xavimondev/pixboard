@@ -35,7 +35,7 @@ const FilterOption = React.memo(function FilterOption({ filter }: FilterOptionPr
   const { filterName } = useStore((state) => state.filterSelected)
   const mainImage = useStore((state) => state.mainImage)
   const { handleFilters } = useFilter()
-  const { getUrlImageFromFilters } = useTransformation()
+  const { getGeneralTransformation } = useTransformation()
   const othersFilters = generateFilter(filter)
   const urlMainImage = mainImage?.imageData.url
   const imageTransformedData = useStore((state) => state.imageTransformedData)
@@ -48,7 +48,7 @@ const FilterOption = React.memo(function FilterOption({ filter }: FilterOptionPr
 
   const applyFilter = () => {
     handleFilters(filter)
-    const { url } = getUrlImageFromFilters(filter)
+    const { url } = getGeneralTransformation('filter', filter)
     setImagetransformedData({
       ...imageTransformedData!,
       url
