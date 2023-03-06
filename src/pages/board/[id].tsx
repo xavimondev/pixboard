@@ -11,6 +11,7 @@ import { StarterFile } from '@/components/starter-file'
 import { Dropzone } from '@/components/dropzone'
 import { PresetsImages } from '@/components/presets-images'
 import { Editor } from '@/components/editor'
+import { BoardLoader } from '@/components/loaders'
 
 type BoardProps = {
   userInfo: User
@@ -22,6 +23,8 @@ export default function BoardView({ userInfo, presetImages }: BoardProps) {
     liveblocks: { enterRoom, leaveRoom }
   } = useStore()
   const { query } = useRouter()
+  const isLoading = useStore((state) => state.isLoading)
+  const setIsLoading = useStore((state) => state.setIsLoading)
   const mainImage = useStore((state) => state.mainImage)
 
   useEffect(() => {
@@ -34,18 +37,35 @@ export default function BoardView({ userInfo, presetImages }: BoardProps) {
     }
   }, [query.id])
 
+  // TODO: Change this weird effect
+  useEffect(() => {
+    const timeOut = setTimeout(() => {
+      setIsLoading(false)
+    }, 1500)
+
+    return () => {
+      clearTimeout(timeOut)
+    }
+  }, [])
+
   return (
     <Layout user={userInfo}>
-      {mainImage ? (
-        <Editor />
+      {isLoading ? (
+        <BoardLoader />
       ) : (
-        <StarterFile>
-          <Dropzone />
-          <p className='text-sm text-gray-400 mb-2 font-medium'>
-            Or maybe you want to choose one of these presets to start quickly.
-          </p>
-          <PresetsImages presetsImages={presetImages} />
-        </StarterFile>
+        <>
+          {mainImage ? (
+            <Editor />
+          ) : (
+            <StarterFile>
+              <Dropzone />
+              <p className='text-sm text-gray-400 mb-2 font-medium'>
+                Or maybe you want to choose one of these presets to start quickly.
+              </p>
+              <PresetsImages presetsImages={presetImages} />
+            </StarterFile>
+          )}
+        </>
       )}
     </Layout>
   )

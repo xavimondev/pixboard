@@ -62,6 +62,8 @@ type State = {
   setSizeTextSelected: (sizeTextSelected: number) => void
   fontStyles: FontStyles
   setFontStyles: (fontStyles: FontStyles) => void
+  isLoading: boolean
+  setIsLoading: (isLoading: boolean) => void
 }
 
 const client = createClient({
@@ -123,6 +125,7 @@ const useStore = create<WithLiveblocks<State>>()(
         underline: false,
         fontStyle: 'normal'
       },
+      isLoading: true,
       setCursor: (cursor) => set({ cursor }),
       setCropValue: (cropValue: Crop) => set({ cropValue }),
       setPresetSelected: (presetSelected: string) => set({ presetSelected }),
@@ -222,7 +225,8 @@ const useStore = create<WithLiveblocks<State>>()(
           return objValue
         })
         set({ textBoxObjects: textBoxObjectsMapped })
-      }
+      },
+      setIsLoading: (isLoading: boolean) => set({ isLoading })
     }),
     {
       client,
