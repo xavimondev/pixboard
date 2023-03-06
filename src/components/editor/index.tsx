@@ -32,12 +32,14 @@ export function Editor() {
   const Component = toolsComponents.find((tool) => tool.id === toolSelected)!.Component
   return (
     <>
-      <section
-        className='mt-10 flex flex-col sm:flex-row w-full space-y-3 sm:space-y-0 sm:space-x-4 p-10'
-        onPointerMove={(e) => setCursor({ x: e.clientX, y: e.clientY })}
-      >
-        {Component}
-        <ListCursors />
+      <section className='mt-12'>
+        <div
+          className='flex justify-between items-center mx-auto max-w-md sm:max-w-6xl'
+          onPointerMove={(e) => setCursor({ x: e.clientX, y: e.clientY })}
+        >
+          {Component}
+          <ListCursors />
+        </div>
       </section>
     </>
   )
