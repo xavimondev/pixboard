@@ -6,6 +6,7 @@ import useStore from '@/state/store'
 import { ITextOptionsOverlay } from '@/types/board'
 import { getImageScale } from '@/utils/getScale'
 import { ToolsOverlay } from './tools'
+import { ImageLoader } from '@/components/loaders'
 
 const valuesTextBox: ITextOptionsOverlay = {
   isNew: true,
@@ -47,6 +48,12 @@ export const TextOverlay = React.memo(function TextOverlay() {
   const currentUser = useStore((state) => state.liveblocks.room?.getSelf())
   const imageTransformedData = useStore((state) => state.imageTransformedData)
   const removeTextBoxObject = useStore((state) => state.removeTextBoxObject)
+  const setStylesTextBoxObject = useStore((state) => state.setStylesTextBoxObject)
+  const colorTextSelected = useStore((state) => state.colorTextSelected)
+  const sizeTextSelected = useStore((state) => state.sizeTextSelected)
+  const setIsLoadingImage = useStore((state) => state.setIsLoadingImage)
+  const isLoadingImage = useStore((state) => state.isLoadingImage)
+  const fontStyles = useStore((state) => state.fontStyles)
 
   useEffect(() => {
     if (!canvasEl.current) return
@@ -104,6 +111,7 @@ export const TextOverlay = React.memo(function TextOverlay() {
           }
         })
       setCanvasFabric(fabricCanvas)
+      setIsLoadingImage(false)
     })
     return () => {
       fabricCanvas.dispose()
@@ -114,7 +122,7 @@ export const TextOverlay = React.memo(function TextOverlay() {
   useEffect(() => {
     if (textBoxObjects.length === 0 || !canvasFabric) return
     if (isFirstRender) {
-      console.log('usEffect general objects')
+      // console.log('usEffect general objects')
       const { width, height } = imageTransformedData!
       const { scaleWidth, scaleHight } = getImageScale(width, height)
       textBoxObjects.forEach((obj: fabric.Object) => {
@@ -239,12 +247,15 @@ export const TextOverlay = React.memo(function TextOverlay() {
   }
 
   const changeColorOverlay = (value: string) => {
+    // TODO: Add debounce when user change a style
     if (canvasFabric) {
       const activeOverlay = canvasFabric.getActiveObject() as IText
       if (!activeOverlay) return
 
       activeOverlay.set('fill', value)
       canvasFabric.renderAll()
+      // @ts-ignore
+      setStylesTextBoxObject(activeOverlay.id, fontStyles, value, sizeTextSelected)
     }
   }
 
@@ -254,22 +265,27 @@ export const TextOverlay = React.memo(function TextOverlay() {
       if (!activeOverlay) return
       activeOverlay.set(styles)
       canvasFabric.renderAll()
+      // @ts-ignore
+      setStylesTextBoxObject(activeOverlay.id, styles, colorTextSelected, sizeTextSelected)
       // canvasFabric.setActiveObject(activeOverlay)
       // activeOverlay.enterEditing()
     }
   }
 
   const changeSizeOverlay = (fontSize: number) => {
+    // TODO: Add debounce when user types a number
     if (canvasFabric) {
       const activeOverlay = canvasFabric.getActiveObject() as IText
       if (!activeOverlay) return
       activeOverlay.set('fontSize', fontSize)
       canvasFabric.renderAll()
+      // @ts-ignore
+      setStylesTextBoxObject(activeOverlay.id, fontStyles, colorTextSelected, fontSize)
     }
   }
 
   return (
-    <div className='flex flex-col items-center w-full h-full gap-6'>
+    <div className='flex flex-row justify-between items-center gap-6 w-full h-full'>
       <ToolsOverlay
         addText={addText}
         deleteText={deleteText}
@@ -277,7 +293,8 @@ export const TextOverlay = React.memo(function TextOverlay() {
         changeStyleOverlay={changeStyleOverlay}
         changeSizeOverlay={changeSizeOverlay}
       />
-      <div className='border-1 min-h-[400px] min-w-[600px] max-h-[600px] max-w-[800px] flex justify-center items-center bg-default-image'>
+      <div className='border-1 min-h-[400px] min-w-[600px] max-h-[600px] max-w-[800px] flex justify-center items-center'>
+        {isLoadingImage && <ImageLoader />}
         <canvas ref={canvasEl} />
       </div>
     </div>
