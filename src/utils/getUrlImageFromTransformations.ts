@@ -41,12 +41,21 @@ export const overlayImage = (
   textEntered: string,
   fontFamily: string,
   xCoordinate: number,
-  yCoordinate: number
+  yCoordinate: number,
+  fontSize: number,
+  fill: string,
+  fontWeight: string,
+  underline: boolean
 ) => {
   return image.overlay(
     source(
-      text(textEntered, new TextStyle(fontFamily, 22).fontWeight('bold'))
-        .textColor('black')
+      text(
+        textEntered,
+        new TextStyle(fontFamily, fontSize)
+          .fontWeight(fontWeight)
+          .textDecoration(underline ? 'underline' : 'normal')
+      )
+        .textColor(fill)
         .transformation(new Transformation())
     ).position(
       new Position().gravity(compass('north_west')).offsetX(xCoordinate).offsetY(yCoordinate)

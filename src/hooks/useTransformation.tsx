@@ -78,11 +78,21 @@ export function useTransformation() {
     const scaleY = height / renderedHeight // Original height / rendered Height
     // Adding overlay dinamically on canvas
     textBoxObjects.forEach((textOverlay: any) => {
-      const { text, fontFamily, top, left } = textOverlay
+      const { text, fontFamily, top, left, fontSize, fill, fontWeight, underline } = textOverlay
       if (left <= renderedWidth && top <= renderedHeight) {
         const xCoordinate = Math.floor(left! * scaleX)
         const yCoordinate = Math.floor(top! * scaleY)
-        overlayImage(image, text, fontFamily, xCoordinate, yCoordinate)
+        overlayImage(
+          image,
+          text,
+          fontFamily,
+          xCoordinate,
+          yCoordinate,
+          fontSize,
+          fill,
+          fontWeight,
+          underline
+        )
       }
     })
     console.log(`Overlay: ${image.toURL()}`)
