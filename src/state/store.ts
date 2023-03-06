@@ -64,6 +64,8 @@ type State = {
   setFontStyles: (fontStyles: FontStyles) => void
   isLoading: boolean
   setIsLoading: (isLoading: boolean) => void
+  isLoadingImage: boolean
+  setIsLoadingImage: (isLoadingImage: boolean) => void
 }
 
 const client = createClient({
@@ -126,6 +128,7 @@ const useStore = create<WithLiveblocks<State>>()(
         fontStyle: 'normal'
       },
       isLoading: true,
+      isLoadingImage: true,
       setCursor: (cursor) => set({ cursor }),
       setCropValue: (cropValue: Crop) => set({ cropValue }),
       setPresetSelected: (presetSelected: string) => set({ presetSelected }),
@@ -226,7 +229,8 @@ const useStore = create<WithLiveblocks<State>>()(
         })
         set({ textBoxObjects: textBoxObjectsMapped })
       },
-      setIsLoading: (isLoading: boolean) => set({ isLoading })
+      setIsLoading: (isLoading: boolean) => set({ isLoading }),
+      setIsLoadingImage: (isLoadingImage: boolean) => set({ isLoadingImage })
     }),
     {
       client,
