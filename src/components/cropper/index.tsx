@@ -9,7 +9,7 @@ export function Cropper() {
   const setCropValue = useStore((state) => state.setCropValue)
   // w-[480px] max-h-[590px]
   return (
-    <div className='flex flex-col sm:flex-row justify-between items-center w-full h-full sm:space-x-10'>
+    <div className='flex flex-row justify-between items-center gap-6 w-full h-full'>
       <ListPresets />
       <div className='min-h-[400px] min-w-[600px] max-h-[600px] max-w-[800px] flex justify-center items-center bg-default-image'>
         <ReactCrop crop={cropValue} onChange={(c) => setCropValue(c)} keepSelection ruleOfThirds>

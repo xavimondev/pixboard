@@ -8,7 +8,7 @@ export function BlurTweak() {
   const blurLevel = useStore((state) => state.blurLevel)
 
   return (
-    <div className='flex flex-col w-full'>
+    <div className='flex flex-col'>
       <label htmlFor='blur' className='block mb-3 font-medium text-white'>
         Blur level: {blurLevel}
       </label>
@@ -105,7 +105,7 @@ export function ListTools() {
   const { getGeneralTransformation } = useTransformation()
 
   return (
-    <div className='flex flex-col gap-8 h-full w-full'>
+    <div className='flex flex-col gap-8 max-w-[500px]'>
       <BlurTweak />
       <OpacityTweak />
       <QualityTweak />

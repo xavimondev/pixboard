@@ -78,7 +78,7 @@ const FilterOption = React.memo(function FilterOption({ filter }: FilterOptionPr
 export function ListFilters() {
   return (
     <>
-      <div className='flex flex-row justify-between w-full'>
+      <div className='flex flex-row justify-between'>
         <div className='grid grid-cols-4 gap-4'>
           {FILTERS.map((filter: string) => (
             <FilterOption key={filter} filter={filter} />
