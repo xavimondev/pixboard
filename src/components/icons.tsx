@@ -385,3 +385,85 @@ export function UploadIc(props: SVGProps<SVGSVGElement>) {
     </svg>
   )
 }
+
+export function BoldIc(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      strokeWidth='1.8'
+      viewBox='0 0 24 24'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      color='#000000'
+      {...props}
+    >
+      <path
+        d='M12 11.667H8m4 0s3.333 0 3.333-3.334C15.333 5 12 5 12 5s0 0 0 0H8.6a.6.6 0 00-.6.6v6.067m4 0s4 0 4 3.666C16 19 12 19 12 19s0 0 0 0H8.6a.6.6 0 01-.6-.6v-6.733'
+        stroke='currentColor'
+        strokeWidth='1.8'
+      />
+    </svg>
+  )
+}
+
+export function UnderlineIc(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      strokeWidth='1.8'
+      viewBox='0 0 24 24'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      color='#000000'
+      {...props}
+    >
+      <path
+        d='M16 5v6a4 4 0 01-4 4v0a4 4 0 01-4-4V5M6 19h12'
+        stroke='currentColor'
+        strokeWidth='1.8'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+    </svg>
+  )
+}
+
+export function ItalicIc(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      strokeWidth='1.8'
+      viewBox='0 0 24 24'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      color='#000000'
+      {...props}
+    >
+      <path
+        d='M11 5h3m3 0h-3m0 0l-4 14m0 0H7m3 0h3'
+        stroke='currentColor'
+        strokeWidth='1.8'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+    </svg>
+  )
+}
+
+export function TrashIc(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox='0 0 24 24'
+      strokeWidth='1.8'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      color='#000000'
+      {...props}
+    >
+      <path
+        d='M20 9l-1.995 11.346A2 2 0 0116.035 22h-8.07a2 2 0 01-1.97-1.654L4 9M21 6h-5.625M3 6h5.625m0 0V4a2 2 0 012-2h2.75a2 2 0 012 2v2m-6.75 0h6.75'
+        stroke='currentColor'
+        strokeWidth='1.8'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+    </svg>
+  )
+}
