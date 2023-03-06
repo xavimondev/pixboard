@@ -25,6 +25,12 @@ type State = {
   textBoxObjects: any
   addTextBoxObject: (objectText: any) => void
   removeTextBoxObject: (idTextObject: string) => void
+  setStylesTextBoxObject: (
+    idTextObject: string,
+    styles: FontStyles,
+    colorText: string,
+    sizeText: number
+  ) => void
   selectedOverlay: string | null
   isDragging: boolean
   onPointerOverlayDown: (overlayId: string) => void
@@ -196,7 +202,27 @@ const useStore = create<WithLiveblocks<State>>()(
       },
       setColorTextSelected: (colorTextSelected: string) => set({ colorTextSelected }),
       setSizeTextSelected: (sizeTextSelected: number) => set({ sizeTextSelected }),
-      setFontStyles: (fontStyles: FontStyles) => set({ fontStyles })
+      setFontStyles: (fontStyles: FontStyles) => set({ fontStyles }),
+      setStylesTextBoxObject: (
+        idTextObject: string,
+        styles: FontStyles,
+        colorText: string,
+        fontSize: number
+      ) => {
+        const { textBoxObjects } = get()
+        const textBoxObjectsMapped = textBoxObjects.map((objValue: any) => {
+          if (objValue.id === idTextObject) {
+            return {
+              ...objValue,
+              ...styles,
+              fill: colorText,
+              fontSize
+            }
+          }
+          return objValue
+        })
+        set({ textBoxObjects: textBoxObjectsMapped })
+      }
     }),
     {
       client,
