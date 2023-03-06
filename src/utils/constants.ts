@@ -42,4 +42,4 @@ export const DEFAULT_VALUE_CROP: Crop = {
 }
 
 const isDevelopment = process.env.NODE_ENV === 'development'
-export const APP_URL = isDevelopment ? 'http://localhost:3000' : 'https://pixboard.vercel.app'
+export const APP_URL = isDevelopment ? 'http://localhost:3000' : 'https://pixboard.netlify.app'
