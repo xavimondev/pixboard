@@ -203,7 +203,7 @@ export const TextOverlay = React.memo(function TextOverlay() {
   }
 
   return (
-    <div className='flex flex-col sm:flex-row justify-between items-center w-full h-full sm:space-x-10'>
+    <div className='flex flex-col items-center w-full h-full gap-6'>
       <ToolsOverlay addText={addText} />
       <div className='border-1 min-h-[400px] min-w-[600px] max-h-[600px] max-w-[800px] flex justify-center items-center bg-default-image'>
         <canvas ref={canvasEl} />
