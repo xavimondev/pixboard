@@ -1,4 +1,5 @@
 import { Fragment, useState } from 'react'
+import { useRouter } from 'next/router'
 import Image from 'next/image'
 import { signIn, signOut } from 'next-auth/react'
 import { Listbox, Transition } from '@headlessui/react'
@@ -20,20 +21,29 @@ export function AuthBar({ user }: AuthBarProps) {
 
 function SignIn() {
   const [selected, setSelected] = useState<string>('')
+  const {
+    query: { callbackUrl }
+  } = useRouter()
+
   return (
     <Listbox
       value={selected}
       onChange={async (value) => {
         setSelected(value)
-        const CALLBACK_URL = `/board/${getBoardId()}`
+        let CALLBACK_URL_REDIRECT = ''
+        if (callbackUrl) {
+          CALLBACK_URL_REDIRECT = callbackUrl as string
+        } else {
+          CALLBACK_URL_REDIRECT = `/board/${getBoardId()}`
+        }
         if (value === 'Random User') {
           await signIn('credentials', {
             email: 'random.user@example.com',
-            callbackUrl: CALLBACK_URL
+            callbackUrl: CALLBACK_URL_REDIRECT
           })
         } else if (value === 'Github') {
           signIn('github', {
-            callbackUrl: CALLBACK_URL
+            callbackUrl: CALLBACK_URL_REDIRECT
           })
         }
       }}
@@ -95,7 +105,14 @@ function SignOut({ user }: SignOutProps) {
         </div>
         <span className='text-base font-semibold text-white'>{name}</span>
       </div>
-      <button className='hover:bg-neutral-600 rounded-full p-0.5' onClick={() => signOut()}>
+      <button
+        className='hover:bg-neutral-600 rounded-full p-0.5'
+        onClick={() =>
+          signOut({
+            callbackUrl: '/'
+          })
+        }
+      >
         <LogoutIc className='w-7 h-7 text-white' />
       </button>
     </div>

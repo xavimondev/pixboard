@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { authOptions } from '../api/auth/[...nextauth]'
 import useStore from '@/state/store'
+import { APP_URL } from '@/utils/constants'
 import { getBoardId } from '@/utils/getRandomData'
 import type { PresetImage } from '@/types/board'
 import type { User } from '@/types/user'
@@ -77,14 +78,15 @@ type ServerSideProps = {}
 export const getServerSideProps: GetServerSideProps<ServerSideProps> = async ({
   req,
   res,
-  query
+  query,
+  resolvedUrl
 }) => {
   const session = await getServerSession(req, res, authOptions)
-
+  // console.log(resolvedUrl)
   if (!session) {
     return {
       redirect: {
-        destination: '/',
+        destination: `/?callbackUrl=${encodeURIComponent(`${APP_URL}${resolvedUrl}`)}`,
         permanent: false
       }
     }
