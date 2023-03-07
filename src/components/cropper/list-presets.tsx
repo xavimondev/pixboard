@@ -11,7 +11,7 @@ type PresetButtonProps = {
 function PresetButton({ onClick, bgClass, children }: PresetButtonProps) {
   return (
     <button
-      className={`${bgClass} shadow-md px-5 py-1.5 rounded-3xl font-semibold`}
+      className={`${bgClass} shadow-md px-5 py-1.5 rounded-md font-semibold`}
       onClick={onClick}
     >
       {children}
@@ -22,7 +22,7 @@ function PresetButton({ onClick, bgClass, children }: PresetButtonProps) {
 export function ListPresets() {
   const { handlePreset, presetSelected } = usePreset()
   return (
-    <div className='flex gap-3 flex-wrap'>
+    <div className='flex flex-col gap-4'>
       {PRESETS.map((preset) => (
         <PresetButton
           key={preset.id}
