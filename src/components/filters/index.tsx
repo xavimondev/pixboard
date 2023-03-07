@@ -15,22 +15,20 @@ export function Filters() {
     <>
       <div className='flex flex-row items-center w-full space-x-4'>
         <ListFilters />
-        <div
-          className={`max-h-[600px] max-w-[800px] flex justify-center items-center ${
-            !isLoadingImage ? 'border border-neutral-700' : ''
-          }`}
-        >
+        <div className='flex flex-col gap-2'>
           {isLoadingImage && <ImageLoader />}
-          <Image
-            alt='Imagen choosen by user'
-            src={url}
-            width={scaleWidth}
-            height={scaleHight}
-            className='max-h-full max-w-full object-cover'
-            onLoadingComplete={() => {
-              setIsLoadingImage(false)
-            }}
-          />
+          <div className='max-h-[600px] max-w-[800px] flex justify-center items-center border border-neutral-700'>
+            <Image
+              alt='Imagen choosen by user'
+              src={url}
+              width={scaleWidth}
+              height={scaleHight}
+              className='max-h-full max-w-full object-cover'
+              onLoadingComplete={() => {
+                setIsLoadingImage(false)
+              }}
+            />
+          </div>
         </div>
       </div>
     </>

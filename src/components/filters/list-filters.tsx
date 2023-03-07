@@ -40,6 +40,7 @@ const FilterOption = React.memo(function FilterOption({ filter }: FilterOptionPr
   const urlMainImage = mainImage?.imageData.url
   const imageTransformedData = useStore((state) => state.imageTransformedData)
   const setImagetransformedData = useStore((state) => state.setImagetransformedData)
+  const setIsLoadingImage = useStore((state) => state.setIsLoadingImage)
 
   const bgColor =
     filter === filterName
@@ -53,6 +54,7 @@ const FilterOption = React.memo(function FilterOption({ filter }: FilterOptionPr
       ...imageTransformedData!,
       url
     })
+    setIsLoadingImage(true)
   }
   // TODO: Change ts ignore
   return (
