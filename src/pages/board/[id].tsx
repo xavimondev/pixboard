@@ -18,11 +18,12 @@ import { BoardLoader } from '@/components/loaders'
 type BoardProps = {
   userInfo: User
   presetImages: PresetImage[]
+  isToolbarEnable: boolean
 }
 
-const MAX_USERS = 4
+const MAX_USERS = 3
 
-export default function BoardView({ userInfo, presetImages }: BoardProps) {
+export default function BoardView({ userInfo, presetImages, isToolbarEnable }: BoardProps) {
   const {
     liveblocks: { enterRoom, leaveRoom }
   } = useStore()
@@ -53,7 +54,7 @@ export default function BoardView({ userInfo, presetImages }: BoardProps) {
   }, [])
 
   return (
-    <Layout user={userInfo}>
+    <Layout user={userInfo} isToolbarEnable={isToolbarEnable}>
       {isLoading ? (
         <BoardLoader />
       ) : (
@@ -120,21 +121,26 @@ export const getServerSideProps: GetServerSideProps<ServerSideProps> = async ({
     })
   )
   const roomId = query.id
+  // I added this flag because I just want to display the toolbar to the first user who joined in
+  // This logic can change by adding owner property to the room
+  let isToolbarEnable = true
 
   try {
-    // Only 4 users are allowed, so I need to validate this
+    // Only 3 users are allowed, so I need to validate this
     const resultLive = await fetch(`https://api.liveblocks.io/v2/rooms/${roomId}/active_users`, {
       headers: {
         Authorization: `Bearer ${process.env.LIVEBLOCKS_SECRET}`
       }
     })
-
     const activeUsers = await resultLive.json()
-    if (activeUsers) {
-      // console.log(activeUsers)
+    if (!activeUsers.error) {
       // @ts-ignore
-      const totalUsersActive = activeUsers.data
-      if (totalUsersActive.length === MAX_USERS) {
+      const totalUsersActive = activeUsers.data.length
+      // console.log(totalUsersActive)
+      if (totalUsersActive > 0) {
+        isToolbarEnable = false
+      }
+      if (totalUsersActive === MAX_USERS) {
         return {
           redirect: {
             destination: `/board/${getBoardId()}`,
@@ -150,7 +156,8 @@ export const getServerSideProps: GetServerSideProps<ServerSideProps> = async ({
   return {
     props: {
       userInfo,
-      presetImages
+      presetImages,
+      isToolbarEnable
     }
   }
 }

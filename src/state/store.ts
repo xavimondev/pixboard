@@ -249,7 +249,8 @@ const useStore = create<WithLiveblocks<State>>()(
         filterSelected: true,
         blurLevel: true,
         opacityLevel: true,
-        qualitySelected: true
+        qualitySelected: true,
+        toolSelected: true
       }
     }
   )
