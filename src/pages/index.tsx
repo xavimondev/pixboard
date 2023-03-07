@@ -14,7 +14,7 @@ type BoardProps = {
 export default function Home({ userInfo }: BoardProps) {
   return (
     <>
-      <Layout user={userInfo.user} />
+      <Layout user={userInfo.user} isToolbarEnable />
     </>
   )
 }
