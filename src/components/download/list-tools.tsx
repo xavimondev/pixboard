@@ -102,6 +102,7 @@ export function QualityTweak() {
 export function ListTools() {
   const imageTransformedData = useStore((state) => state.imageTransformedData)
   const setImagetransformedData = useStore((state) => state.setImagetransformedData)
+  const setIsLoadingImage = useStore((state) => state.setIsLoadingImage)
   const { getGeneralTransformation } = useTransformation()
 
   return (
@@ -118,6 +119,7 @@ export function ListTools() {
               url,
               urlDownloadable
             })
+            setIsLoadingImage(true)
           }}
           className='text-sky-500 font-semibold text-base bg-sky-700/[0.5] p-1.5 rounded-md flex items-center'
         >

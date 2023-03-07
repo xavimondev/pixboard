@@ -15,23 +15,19 @@ export function Download() {
     <>
       <div className='flex flex-row justify-between items-center gap-6 w-full h-full'>
         <ListTools />
-        <div
-          className={`max-h-[600px] max-w-[800px] flex justify-center items-center ${
-            !isLoadingImage ? 'border border-neutral-700' : ''
-          }`}
-        >
-          <Image
-            alt='Imagen choosen by user'
-            src={url}
-            width={scaleWidth}
-            height={scaleHight}
-            className='max-h-full max-w-full object-cover'
-            onLoadingComplete={() => {
-              setIsLoadingImage(false)
-            }}
-          />
-          <div className={`${isLoadingImage ? 'block w-3/12' : 'hidden'}`}>
-            <ImageLoader />
+        <div className='flex flex-col gap-2'>
+          {isLoadingImage && <ImageLoader />}
+          <div className='max-h-[600px] max-w-[800px] flex justify-center items-center border border-neutral-700'>
+            <Image
+              alt='Imagen choosen by user'
+              src={url}
+              width={scaleWidth}
+              height={scaleHight}
+              className='max-h-full max-w-full object-cover'
+              onLoadingComplete={() => {
+                setIsLoadingImage(false)
+              }}
+            />
           </div>
         </div>
       </div>
