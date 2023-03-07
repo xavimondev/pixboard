@@ -15,7 +15,7 @@ export function SeoHeader() {
         content='Pixboard.io - A realtime collaboration tool for editing images'
       />
       <meta property='og:description' content='A realtime collaboration tool for editing images' />
-      <meta property='og:image' content='https://https://pixboard.netlify.app/ogimage.jpg' />
+      <meta property='og:image' content='https://pixboard.netlify.app/ogimage.jpg' />
       <meta name='twitter:card' content='summary_large_image' />
       <meta name='twitter:site' content='@xavimonp' />
       <meta name='twitter:creator' content='@xavimonp' />
