@@ -60,7 +60,7 @@ const FilterOption = React.memo(function FilterOption({ filter }: FilterOptionPr
   return (
     <button
       onClick={applyFilter}
-      className={`${bgColor} px-3 py-4 justify-between flex flex-col items-center rounded-lg`}
+      className={`${bgColor} px-3 py-4 justify-between flex flex-col items-center rounded-md`}
     >
       <CldImage
         width={100}
