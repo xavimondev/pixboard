@@ -1,3 +1,9 @@
+<p align="center">
+  <a href="https://pixboard.netlify.app/" target="_blank">
+    <img src="https://pixboard.netlify.app/ogimage.jpg" width="100%" alt="Banner" />
+  </a>
+</p>
+
 # pixboard.io
 
 Pixboard is an application that uses Cloudinary's capabilities to enhance your images in different ways. Thanks to realtime features, you'll be able to collaborate with others users.
