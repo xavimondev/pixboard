@@ -7,7 +7,7 @@ export function SeoHeader() {
       <meta name='viewport' content='width=device-width, initial-scale=1' />
       <meta name='description' content='A realtime collaboration tool for editing images' />
       <meta name='theme-color' content='#0d1117' />
-      <link rel='icon' href='/favicon.ico' />
+      <link rel='icon' href='/icon/favicon.ico' />
       <meta property='og:url' content='https://pixboard.netlify.app/' />
       <meta property='og:type' content='website' />
       <meta
